@@ -1,0 +1,601 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="最近 goagent 升级了, 从 2.x 升级到了 3.0 速度貌似没太大的变化，但是感觉稳定了不少。最重要的变化莫过于原来是基于 python2.7 的，新版的直接依赖 python3.3,感觉真的是有点激进了。windows 下用没有任何问题，作者直接在安装包中打包了个精简版本的 python3，但是自己常用的 ubuntu 12.04 还没有安装 python3 还是要自己手动安装下的。具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="install goagent3.0 in ubuntu12.04">
+<meta property="og:url" content="http://tingxueren.com/2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="最近 goagent 升级了, 从 2.x 升级到了 3.0 速度貌似没太大的变化，但是感觉稳定了不少。最重要的变化莫过于原来是基于 python2.7 的，新版的直接依赖 python3.3,感觉真的是有点激进了。windows 下用没有任何问题，作者直接在安装包中打包了个精简版本的 python3，但是自己常用的 ubuntu 12.04 还没有安装 python3 还是要自己手动安装下的。具">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="install goagent3.0 in ubuntu12.04">
+<meta name="twitter:description" content="最近 goagent 升级了, 从 2.x 升级到了 3.0 速度貌似没太大的变化，但是感觉稳定了不少。最重要的变化莫过于原来是基于 python2.7 的，新版的直接依赖 python3.3,感觉真的是有点激进了。windows 下用没有任何问题，作者直接在安装包中打包了个精简版本的 python3，但是自己常用的 ubuntu 12.04 还没有安装 python3 还是要自己手动安装下的。具">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/"/>
+
+  <title> install goagent3.0 in ubuntu12.04 | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                install goagent3.0 in ubuntu12.04
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2013-07-02T18:37:00+08:00" content="2013-07-02">
+              2013-07-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近 goagent 升级了, 从 2.x 升级到了 3.0 速度貌似没太大的变化，但是感觉稳定了不少。最重要的变化莫过于原来是基于 python2.7 的，新版的直接依赖 python3.3,感觉真的是有点激进了。windows 下用没有任何问题，作者直接在安装包中打包了个精简版本的 python3，但是自己常用的 ubuntu 12.04 还没有安装 python3 还是要自己手动安装下的。具体的步骤可以参考官网的<a href="https://code.google.com/p/goagent/wiki/GoAgent_Linux" target="_blank" rel="external">wiki</a>, 在按照上面的步骤安装的时候还遇到点小问题，下面是解决的过程。</p>
+<h2 id="Python3-ImportError-No-module-named-zlib"><a href="#Python3-ImportError-No-module-named-zlib" class="headerlink" title="Python3 ImportError: No module named zlib"></a>Python3 ImportError: No module named zlib</h2><p>我采用的安装方式是编译安装，按照 wiki 的命令是<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2 &amp;&amp; tar jxvf Python-3.3.2.tar.bz2 &amp;&amp; <span class="built_in">cd</span> Python-3.3.2 &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install</div></pre></td></tr></table></figure></p>
+<p>安装后在运行时就会提示 <code>ImportError: No module named zlib</code>, google 后发现有人遇到<a href="http://stackoverflow.com/questions/4134708/python3-no-gzip-or-zlib" target="_blank" rel="external">同样的问题</a>, 页面上同样还有解决方案的<a href="http://www.1stbyte.com/2005/06/26/configure-and-compile-python-with-zlib/" target="_blank" rel="external">链接</a>。默认编译的时候没有加上 zlib 的参数，所以将 zlib 模块添加进编译参数，重新编译安装就好。完整的编译安装的命令如下所示：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2 &amp;&amp; tar jxvf Python-3.3.2.tar.bz2 &amp;&amp; <span class="built_in">cd</span> Python-3.3.2 &amp;&amp; ./configure -with-zlib=/usr/include &amp;&amp; make &amp;&amp; sudo make install</div></pre></td></tr></table></figure></p>
+<p>注意 <code>./configure</code> 后面的 <code>-with-zlib=/usr/include</code> 参数。</p>
+<h2 id="安装-PyOpenSSL-问题"><a href="#安装-PyOpenSSL-问题" class="headerlink" title="安装 PyOpenSSL 问题"></a>安装 PyOpenSSL 问题</h2><p>在执行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://pypi.python.org/packages/<span class="built_in">source</span>/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz &amp;&amp; tar zxvf pyOpenSSL-0.13.tar.gz &amp;&amp; <span class="built_in">cd</span> pyOpenSSL-0.13 &amp;&amp; sudo python3 setup.py install</div></pre></td></tr></table></figure></p>
+<p>安装 PyOpenSSL 的时候会遇到 <code>src/crypto/x509.h:17:25: error: openssl/ssl.h: No such file or directory</code> 的问题，和这个<a href="https://tahoe-lafs.org/pipermail/tahoe-dev/2009-July/002469.html" target="_blank" rel="external">页面</a>描述的情况一致。还是缺少某些依赖包，这个页面上也给出了解决方案，执行下面的语句，安装上 <code>libssl-dev</code> 后继续编译就好了。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libssl-dev</div></pre></td></tr></table></figure></p>
+<p>自此 goagent3.0 应该可以在 ubuntu 12.04 下正常的工作了，记得还有个包需要安装，不过不影响运行，且有提示，按照提示安装好需要的包就可以了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/03/23/vpsan-zhuang-delugebing-she-zhi-iptablesgui-ze/" rel="next" title="vps 安装 deluge 并设置 iptables 规则">
+                <i class="fa fa-chevron-left"></i> vps 安装 deluge 并设置 iptables 规则
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/10/22/zhao-gong-zuo-jie-shu-liao/" rel="prev" title="找工作结束了">
+                找工作结束了 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python3-ImportError-No-module-named-zlib"><span class="nav-number">1.</span> <span class="nav-text">Python3 ImportError: No module named zlib</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-PyOpenSSL-问题"><span class="nav-number">2.</span> <span class="nav-text">安装 PyOpenSSL 问题</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/';
+      var disqus_title = "install goagent3.0 in ubuntu12.04";
+      var disqus_url = 'http://tingxueren.com/2013/07/02/install-goagent3-dot-0-in-ubuntu12-dot-04/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

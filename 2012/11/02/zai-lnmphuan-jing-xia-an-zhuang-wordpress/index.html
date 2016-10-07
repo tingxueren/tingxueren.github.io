@@ -1,0 +1,622 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="买了vps后感觉总是让它在空跑很浪费资源的感觉，前期在上面安装了openvpn和ssh只用来翻墙，看到负载常常是0.00真的很郁闷。将github.com上以前用octopress生成的blog放上去，负载基本上还是零，郁闷了，准备捣鼓wordpress了。
+安装wordpress本来以为安装起来很麻烦，但是看了下教程竟然如此的简单。wordpress 需要php环境和mysql，现在想起来网上卖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在LNMP环境下安装wordpress">
+<meta property="og:url" content="http://tingxueren.com/2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="买了vps后感觉总是让它在空跑很浪费资源的感觉，前期在上面安装了openvpn和ssh只用来翻墙，看到负载常常是0.00真的很郁闷。将github.com上以前用octopress生成的blog放上去，负载基本上还是零，郁闷了，准备捣鼓wordpress了。
+安装wordpress本来以为安装起来很麻烦，但是看了下教程竟然如此的简单。wordpress 需要php环境和mysql，现在想起来网上卖">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在LNMP环境下安装wordpress">
+<meta name="twitter:description" content="买了vps后感觉总是让它在空跑很浪费资源的感觉，前期在上面安装了openvpn和ssh只用来翻墙，看到负载常常是0.00真的很郁闷。将github.com上以前用octopress生成的blog放上去，负载基本上还是零，郁闷了，准备捣鼓wordpress了。
+安装wordpress本来以为安装起来很麻烦，但是看了下教程竟然如此的简单。wordpress 需要php环境和mysql，现在想起来网上卖">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/"/>
+
+  <title> 在LNMP环境下安装wordpress | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在LNMP环境下安装wordpress
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2012-11-02T20:36:00+08:00" content="2012-11-02">
+              2012-11-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>买了vps后感觉总是让它在空跑很浪费资源的感觉，前期在上面安装了openvpn和ssh只<br>用来翻墙，看到负载常常是0.00真的很郁闷。将github.com上以前用octopress生成的<br>blog放上去，负载基本上还是零，郁闷了，准备捣鼓wordpress了。</p>
+<h2 id="安装wordpress"><a href="#安装wordpress" class="headerlink" title="安装wordpress"></a>安装wordpress</h2><p>本来以为安装起来很麻烦，但是看了下教程竟然如此的简单。wordpress 需要php环境<br>和mysql，现在想起来网上卖的虚拟主机是什么东西了。就是分配一块磁盘空间，给客<br>建立个mysql帐号，大不了再给个ftp帐号，就这样就拿来卖了，相当的简单。还是vps<br>自由度高，想怎么折腾就怎么折腾。</p>
+<p>vps上现在安装的是LNMP的一键安装包0.9版，有php和mysql环境，安装wordpress的环<br>境要求得到了满足。只需要以root权限运行 /vhost.sh 的脚本添加个新的网站，比如<br>myblog.com 就会在 /home/wwwroot/ 文件夹下生成网站的文件夹：myblog.com<br>以下的操作都会在这个文件夹进行。</p>
+<pre><code>#下载wordpress中文包 
+$wget http://cn.wordpress.org/wordpress-3.4.2-zh_CN.tar.gz
+#解压到本地
+$tar xzvf wordpress-3.4.2-zh_CN.tar.gz -C myblog.com
+#将文件转移到myblog.com
+$cp wordpress/* .
+$rm -rf wordpress
+</code></pre><p>现在还需要个mysql帐号就好了，登陆phpadmin为blog专门建立个帐号，权限配置暂时<br>没搞清楚，除了管理权限什么都给了，应该有点多，以后搞懂后再修改吧，现在先用<br>着。然后访问域名 www.myblog.com 就会看到 wordpress 的欢迎页面，创建你的帐号<br>就可以用了。</p>
+<h2 id="wordpress-调整"><a href="#wordpress-调整" class="headerlink" title="wordpress 调整"></a>wordpress 调整</h2><p>一直对wordpress的可折腾性抱有很高的期望，在网上看到各种不同风格的wordpress<br>网站一直搞不懂是怎么做出来的。进入后台明白了，主要归功于wordpress的架构，可<br>以随心所欲的更换主题和添加插件。而且大部分的布局还可以自己调整，就是这种灵<br>活性造就了同样的架构，表现起来却千变万化。只要耐心，能折腾自己也能搞不独一<br>无二的blog。</p>
+<h3 id="wordpress-主题"><a href="#wordpress-主题" class="headerlink" title="wordpress 主题"></a>wordpress 主题</h3><p>主题还是比较容易更换的，在仪表盘上直接有主题的选项，点击安装新的主题即可，<br>比较郁闷的是我的wordpress不管安装了多少个主题，当前可用主题一直只有当前主题<br>其他的都不见了，最后搜索了原来是 LNMP 安装包的 php 设置的问题，修改下配置就<br>好了，可以看另一篇博文。</p>
+<h3 id="wordpress-代码高亮显示"><a href="#wordpress-代码高亮显示" class="headerlink" title="wordpress 代码高亮显示"></a>wordpress 代码高亮显示</h3><p>作为未来的程序猿，免不了要在blog里贴点代码什么的，用 octopress 的时候，编辑<br>文章是自己写 Markdown 文档，只要按照规定的格式写就能自动的转化成不错的 html<br>代码，wordpress 是需要插件的，就是这个插件折腾的我都要崩溃了。</p>
+<ul>
+<li><p>网上推荐的是用的WP-Syntax，具体的使用可以参看这篇<a href="http://www.boke8.net/wordpress-wp-syntax-plugin.html" target="_blank" rel="external">文章</a>, 还有一个button可以方便的在可视化状态<br>下插入代码。这个插件最郁闷的地方是插入代码必须在html视图下插入，但是转到可<br>视化的视图查看后再转回来就常常造成html代码混乱了，无法正常的代码高亮。开始<br>的时候插件工作的还很正常，但是经过几次实验后就彻底的罢工了，怎么也搞不成代<br>高亮了。</p>
+</li>
+<li><p>我的替代方案是用SyntaxHighlighter，简要介绍在<a href="http://codeup.org/archives/128" target="_blank" rel="external">这里</a>。这个方案的特点是使用够简单，而且不需要在不同的视图之间转换。比<br>如添加 c++ 代码，只需要在可视化视图下[cpp] your code [/cpp] 即可，相当的<br>方便。</p>
+</li>
+<li><p>现在用的代码高亮的插件用起来还不错，不过有点很郁闷，wordpress 会自动的删<br>除 tab 的空白。本来本地的代码，用 tab 缩进的好好的，但是贴在 wordpress 就<br>会因为把 tab 缩进删除导致了漂亮的代码看起来惨不忍睹。解决方案有2种，一种是<br>自己手动添加空格，不用 tab 缩进，但是工程量很大；另一个方案是用万能的vim，<br>强大的vim竟然有直接将当前代码生成 html 的命令，确实强大到让人无语，这里有<br>简要的<a href="http://openwares.net/vim/vim_wordpress_syntax.html" target="_blank" rel="external">介绍</a>。这里是<br><a href="http://www.mars.tingxueren.com/index.php/2012/11/01/%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%BA%94%E7%94%A8vim-vim-%E5%91%BD%E4%BB%A4-tohtml/" target="_blank" rel="external">效果</a>。 但是对<br>与 html 的代码无任何了解，vim 直接生成的代码贴上去后整个页面就无法编辑了,<br>如果编辑的话会产生莫名奇妙的错误，等以后了解了 html 后再用 vim 生成的代码<br>了。</p>
+</li>
+</ul>
+<h3 id="虾米音乐插件"><a href="#虾米音乐插件" class="headerlink" title="虾米音乐插件"></a>虾米音乐插件</h3><p> 用了wordpress发现它的插件是很强大的，因为的有php的网页，动态交互什么的也<br> 不在话下。在网页中插个播放器什么的比 octopress 的话方便很多。我用的是个<br> <a href="http://www.appinn.com/tinymce-xiami-music/" target="_blank" rel="external">TinyMCE Xiami Music for WordPress</a>, 直接抓取虾米的音乐放在页面，挺不错的。</p>
+<h3 id="关于图片和媒体及版本控制"><a href="#关于图片和媒体及版本控制" class="headerlink" title="关于图片和媒体及版本控制"></a>关于图片和媒体及版本控制</h3><p> 用了一段 wordpress 后我总算是明白了mysql数据库是干什么的，插入的媒体，图片<br> 什么的都会存储在 mysql 数据库中，可以方便的在文章中插入，这点在 Markdown<br> 中插入图片方便。同时 mysql 数据库还保留了同一篇文章你不同时间修改的版本，<br> 当你发现当前的版本不合适时可以很容易的恢复到历史版本。</p>
+<p>wordpress 的强大功能还有待发掘，就这么短短的试用时间来说还是不错的，基本上<br>比较满意。以后 wordpress 的 blog 主要放图片比较多的文章，毕竟 wordpress 插<br>入媒体比较方便，octopress 的 blog 适合随手写的东西，毕竟在本地 vim 中码点字<br>比用 wordpress 的在线编辑器体验好很多。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/10/20/zhe-teng-vpsshou-ji/" rel="next" title="折腾vps手记">
+                <i class="fa fa-chevron-left"></i> 折腾vps手记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/11/08/dai-ma-gao-liang-zhe-teng-bi-ji/" rel="prev" title="代码高亮折腾笔记">
+                代码高亮折腾笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装wordpress"><span class="nav-number">1.</span> <span class="nav-text">安装wordpress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wordpress-调整"><span class="nav-number">2.</span> <span class="nav-text">wordpress 调整</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wordpress-主题"><span class="nav-number">2.1.</span> <span class="nav-text">wordpress 主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wordpress-代码高亮显示"><span class="nav-number">2.2.</span> <span class="nav-text">wordpress 代码高亮显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虾米音乐插件"><span class="nav-number">2.3.</span> <span class="nav-text">虾米音乐插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于图片和媒体及版本控制"><span class="nav-number">2.4.</span> <span class="nav-text">关于图片和媒体及版本控制</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/';
+      var disqus_title = "在LNMP环境下安装wordpress";
+      var disqus_url = 'http://tingxueren.com/2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

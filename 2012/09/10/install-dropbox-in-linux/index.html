@@ -1,0 +1,634 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Dropbox 是个很神奇的工具，你可以用它来同步重要的文件，配置。可以放心的把文件放在云端，作为备份。Dropbox 有着齐全的平台覆盖，不但有 windows客户端，MAC 客户端，还有 ios 客户端，Android 客户端，最让我高兴的是还有 Linux 客户端，这点让我十分的欣赏。Dropbox 真正的实现了全平台覆盖，在不同的平台上都给人一致的体验。
+Dropbox 的安装天朝是个神奇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="install dropbox in linux">
+<meta property="og:url" content="http://tingxueren.com/2012/09/10/install-dropbox-in-linux/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="Dropbox 是个很神奇的工具，你可以用它来同步重要的文件，配置。可以放心的把文件放在云端，作为备份。Dropbox 有着齐全的平台覆盖，不但有 windows客户端，MAC 客户端，还有 ios 客户端，Android 客户端，最让我高兴的是还有 Linux 客户端，这点让我十分的欣赏。Dropbox 真正的实现了全平台覆盖，在不同的平台上都给人一致的体验。
+Dropbox 的安装天朝是个神奇">
+<meta property="og:image" content="http://tingxueren.com/images/dropbox-error.png">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="install dropbox in linux">
+<meta name="twitter:description" content="Dropbox 是个很神奇的工具，你可以用它来同步重要的文件，配置。可以放心的把文件放在云端，作为备份。Dropbox 有着齐全的平台覆盖，不但有 windows客户端，MAC 客户端，还有 ios 客户端，Android 客户端，最让我高兴的是还有 Linux 客户端，这点让我十分的欣赏。Dropbox 真正的实现了全平台覆盖，在不同的平台上都给人一致的体验。
+Dropbox 的安装天朝是个神奇">
+<meta name="twitter:image" content="http://tingxueren.com/images/dropbox-error.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2012/09/10/install-dropbox-in-linux/"/>
+
+  <title> install dropbox in linux | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                install dropbox in linux
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2012-09-10T20:49:00+08:00" content="2012-09-10">
+              2012-09-10
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2012/09/10/install-dropbox-in-linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/09/10/install-dropbox-in-linux/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Dropbox 是个很神奇的工具，你可以用它来同步重要的文件，配置。可以放心的把文件放在云端，作为备份。Dropbox 有着齐全的平台覆盖，不但有 windows客户端，MAC 客户端，还有 ios 客户端，Android 客户端，最让我高兴的是还有 Linux 客户端，这点让我十分的欣赏。Dropbox 真正的实现了全平台覆盖，在不同的平台上都给人一致的体验。</p>
+<h2 id="Dropbox-的安装"><a href="#Dropbox-的安装" class="headerlink" title="Dropbox 的安装"></a>Dropbox 的安装</h2><p>天朝是个神奇的地方，基本上好的互联网服务都会被 #GFW 认证。可以说被 #GFW 认证的服务才是靠谱和真正有价值的服务。</p>
+<p>为了能正常的使用 Dropbox 请认真学习各种翻墙技能，常常温故知新，多准备些备用手段，以便应付 #GFW 层出不穷的攻击手段。推荐的梯子有 VPN、SSH、GAE（GoAgent，Wallproxy）等等。</p>
+<ul>
+<li><p>为了使用 Dropbox，必须先有个帐号，Dropbox 主页被墙，请自备梯子。客户端<br>暂时还能正常的使用，但是有个问题，在两台电脑之间无法即时同步，因为提供即<br>时同步功能的服务器与客户端用的是 http 协议，被 #GFW 干扰。但是重新关闭客<br>户端后即可正常同步，天朝威武，把好好的自动工具搞成了半自动。</p>
+</li>
+<li><p>在主页上有 Dropbox 软件下载, Windows 下客户端是一个单一个软件，Linux<br>下却会给人带来点小麻烦。</p>
+</li>
+<li><p>在 ubuntu 下软件中心有 Dropbox，但是安装后会有以下的画面：</p>
+</li>
+<li><p><img src="/images/dropbox-error.png" alt="" title="dropbox error"></p>
+<p>原因是软件中心的 Dropbox 只是个 nautilus 插件，由它整合 Dropbox 和 nautilus<br>本身并不是完整的客户端，需要从 Dropbox 官网下载完整的安装包。</p>
+</li>
+<li><p>然后在下载的安装包的过程中，你会发现安装进程像卡死一样一动不同。<br>不用怀疑，是 #GFW 发威了，它阻断了你与 Dropbox 官网的连接，为了正常的用 Dropbox，<br>我们需要手动安装客户端。</p>
+</li>
+<li><p>令人高兴的是 Dropbox 提供了安装包的完整的下载版本，可以在<a href="https://www.dropbox.com/install?os=lnx" target="_blank" rel="external">Dropbox官网</a>查看。</p>
+</li>
+<li><p>下载安装有两种方式，一种是从浏览器下载，然后解压，执行; 另一种是自己在终<br>端中执行所有的操作。</p>
+</li>
+<li><p>翻墙方式首选 VPN ，然后终端中的命令可以顺利的执行，如果是用 GoAgent 等<br>工具的话需要在执行前设置终端的代理，让终端接下来的操作都通过代理进行，<br>即通过代理下载安装包，由于安装软件需要 root 权限，切记在设置代理前，切换<br>为 root 用户，下面 GoAgent 为例说明设置（8087为GoAgent默认端口）。</p>
+<pre><code>export http_proxy=http://127.0.0.1:8087   
+export https_proxy=http://127.0.0.1:8087   
+</code></pre></li>
+<li><p>然后在终端中执行下面命令以完成安装：</p>
+<pre><code># 32 位系统执行下面命令
+$cd ~ &amp;&amp; wget -O - &quot;https://www.dropbox.com/download?plat=lnx.x86&quot; | tar xzf -
+
+# 64 位系统执行下面命令
+$cd ~ &amp;&amp; wget -O - &quot;https://www.dropbox.com/download?plat=lnx.x86_64&quot; | tar xzf -
+</code></pre></li>
+<li><p>最后执行下面的命令</p>
+<pre><code>$ ~/.dropbox-dist/dropboxd
+</code></pre></li>
+</ul>
+<p>Dropbox 安装顺利完成，享受全平台同步的快感吧。    </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/08/07/shelljiao-ben-fen-xiang/" rel="next" title="shell脚本分享">
+                <i class="fa fa-chevron-left"></i> shell脚本分享
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/10/20/zhe-teng-vpsshou-ji/" rel="prev" title="折腾vps手记">
+                折腾vps手记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dropbox-的安装"><span class="nav-number">1.</span> <span class="nav-text">Dropbox 的安装</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2012/09/10/install-dropbox-in-linux/';
+      var disqus_title = "install dropbox in linux";
+      var disqus_url = 'http://tingxueren.com/2012/09/10/install-dropbox-in-linux/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

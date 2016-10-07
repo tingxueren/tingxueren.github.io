@@ -1,0 +1,610 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="既然享受了上网的便利，有时候就不得不忍受网络带来的痛苦。正上网看视频看的 high, 突然网页卡死了，刷新后网页都打不开，正聊 QQ 突然掉线了，想访问些国外网站发现输入域名后跳转到莫名其妙的网站，这时候你就要检查下自己的网络问题了。“工欲善其事，必先利其器”， Linux 下有很好用的网络工具，掌握了这些工具基本上就能找到网络出毛病的原因，自己动手修复了。
+常用工具常用的工具一般有：ping、i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 常用网络工具">
+<meta property="og:url" content="http://tingxueren.com/2012/11/24/linux-chang-yong-wang-luo-gong-ju/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="既然享受了上网的便利，有时候就不得不忍受网络带来的痛苦。正上网看视频看的 high, 突然网页卡死了，刷新后网页都打不开，正聊 QQ 突然掉线了，想访问些国外网站发现输入域名后跳转到莫名其妙的网站，这时候你就要检查下自己的网络问题了。“工欲善其事，必先利其器”， Linux 下有很好用的网络工具，掌握了这些工具基本上就能找到网络出毛病的原因，自己动手修复了。
+常用工具常用的工具一般有：ping、i">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 常用网络工具">
+<meta name="twitter:description" content="既然享受了上网的便利，有时候就不得不忍受网络带来的痛苦。正上网看视频看的 high, 突然网页卡死了，刷新后网页都打不开，正聊 QQ 突然掉线了，想访问些国外网站发现输入域名后跳转到莫名其妙的网站，这时候你就要检查下自己的网络问题了。“工欲善其事，必先利其器”， Linux 下有很好用的网络工具，掌握了这些工具基本上就能找到网络出毛病的原因，自己动手修复了。
+常用工具常用的工具一般有：ping、i">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2012/11/24/linux-chang-yong-wang-luo-gong-ju/"/>
+
+  <title> Linux 常用网络工具 | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux 常用网络工具
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2012-11-24T18:22:00+08:00" content="2012-11-24">
+              2012-11-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2012/11/24/linux-chang-yong-wang-luo-gong-ju/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/11/24/linux-chang-yong-wang-luo-gong-ju/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>既然享受了上网的便利，有时候就不得不忍受网络带来的痛苦。正上网看视频看的 high, 突然网页卡死了，刷新后网页都打不开，正聊 QQ 突然掉线了，想访问些国外网站发现输入域名后跳转到莫名其妙的网站，这时候你就要检查下自己的网络问题了。“工欲善其事，必先利其器”， Linux 下有很好用的网络工具，掌握了这些工具基本上就能找到网络出毛病的原因，自己动手修复了。</p>
+<h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><p>常用的工具一般有：ping、ifconfig、traceroute、nslookup、dig、whois、iftop、ntop等，下面简要介绍下</p>
+<h3 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h3><p>ping 很简单，也是最常用的工具，常常用来测试网络是否联通，用法：ping ip/host 即可，Windows 下也用同样的命令<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 测试网络是否联通</span></div><div class="line">$ ping  baidu.com</div><div class="line"><span class="comment"># 有时候 ping 的返回会很慢，这是因为 ping 会尽量将 ip 转化为域名，如果对应 ip 没有设置域名</span></div><div class="line"><span class="comment"># 解析的话会直到超时才返回，可以添加 -n 参数，让 ping 立即得到返回数据</span></div><div class="line">$ ping -n 8.8.8.8</div></pre></td></tr></table></figure></p>
+<h3 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h3><p>ifconfig 是用来查看本机网络的各种接口的， Windows 下对应命令为 ipconfig<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 本机执行 ifconig</span></div><div class="line">$ ifconfig</div><div class="line">eth0      Link encap:Ethernet  HWaddr 8c:89:a5:39:**:**  </div><div class="line">          inet addr:192.168.1.100  Bcast:192.168.1.255  Mask:255.255.255.0</div><div class="line">          inet6 addr: fe80::8e89:a5ff:fe39:5c96/64 Scope:Link</div><div class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</div><div class="line">          RX packets:3591303 errors:0 dropped:10 overruns:0 frame:0</div><div class="line">          TX packets:3219419 errors:0 dropped:0 overruns:0 carrier:0</div><div class="line">          collisions:0 txqueuelen:1000 </div><div class="line">          RX bytes:3257148705 (3.2 GB)  TX bytes:448474566 (448.4 MB)</div><div class="line">          Interrupt:43 Base address:0xe000 </div><div class="line"></div><div class="line">lo        Link encap:Local Loopback  </div><div class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</div><div class="line">          inet6 addr: ::1/128 Scope:Host</div><div class="line">          UP LOOPBACK RUNNING  MTU:16436  Metric:1</div><div class="line">          RX packets:321987 errors:0 dropped:0 overruns:0 frame:0</div><div class="line">          TX packets:321987 errors:0 dropped:0 overruns:0 carrier:0</div><div class="line">          collisions:0 txqueuelen:0 </div><div class="line">          RX bytes:75444551 (75.4 MB)  TX bytes:75444551 (75.4 MB)</div><div class="line"></div><div class="line"><span class="comment"># MAC地址我做了注释，可以看到本机只用一个网卡 eth0，lo 为本地环回接口</span></div><div class="line"><span class="comment"># 本机 ip 为 192.168.1.100, 为一个私有地址，因为我的电脑是接在路由器下面的</span></div><div class="line"><span class="comment"># 其他参数可以 man ifconfig</span></div></pre></td></tr></table></figure></p>
+<h3 id="traceroute"><a href="#traceroute" class="headerlink" title="traceroute"></a>traceroute</h3><p>traceroute 是个路由跟踪命令，可以跟踪从本机到目标 ip 的具体路由过程，Windows 下对应的命令是 tracert<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 本机跟踪到 baidu.com 的路由过程</span></div><div class="line">$ traceroute baidu.com</div><div class="line">traceroute to baidu.com (123.125.114.144), 30 hops max, 60 byte packets</div><div class="line"> 1  192.168.1.1 (192.168.1.1)  0.485 ms  1.117 ms  1.313 ms</div><div class="line"> 2  192.168.149.254 (192.168.149.254)  4.472 ms  4.754 ms  4.785 ms</div><div class="line"> *</div><div class="line"> *</div><div class="line"> 9  219.158.14.97 (219.158.14.97)  43.474 ms  43.522 ms  43.695 ms</div><div class="line">10  123.126.0.66 (123.126.0.66)  47.145 ms  47.186 ms  47.248 ms</div><div class="line">11  61.148.3.34 (61.148.3.34)  49.409 ms  49.523 ms  49.417 ms</div><div class="line">12  202.106.43.66 (202.106.43.66)  39.283 ms 202.106.43.174 (202.106.43.174)  40.238 ms  40.661 ms</div><div class="line">29  * * *</div><div class="line">30  * * *</div><div class="line"></div><div class="line"><span class="comment"># 为了保密删除了开头的几条路径</span></div><div class="line"><span class="comment"># 有些路由禁止探测，比如第29, 30 跳</span></div><div class="line"><span class="comment"># 最多跳数为 30, 到了30 跳虽然还没有到 baidu.com 但是命令结束了</span></div></pre></td></tr></table></figure></p>
+<h3 id="nslookup"><a href="#nslookup" class="headerlink" title="nslookup"></a>nslookup</h3><p>nslookup 是用来查询 DNS 解析的，通过这个命令可以明显的看到 GFW 的常用手段 “DNS污染”。Windows 下的命令相同<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 执行 nslookup 用国内 DNS 服务器</span></div><div class="line"><span class="comment"># 命令格式: nslookup 域名 DNS服务器</span></div><div class="line"><span class="comment"># 查询 twitter.com 通过国内DNS服务器</span></div><div class="line">$ nslookup twitter.com  221.12.1.227 </div><div class="line">Server:		221.12.1.227</div><div class="line">Address:	221.12.1.227<span class="comment">#53</span></div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">Name:	twitter.com</div><div class="line">Address: 59.24.3.173</div><div class="line"><span class="comment"># 通过 whois 查询可知 59.24.3.173 是个韩国ip</span></div><div class="line"><span class="comment"># 挂上 vpn 通过 google dns 查询得到正确ip</span></div><div class="line">$ nslookup twitter.com  8.8.8.8</div><div class="line">Server:		8.8.8.8</div><div class="line">Address:	8.8.8.8<span class="comment">#53</span></div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">Name:	twitter.com</div><div class="line">Address: 199.59.150.39</div><div class="line">Name:	twitter.com</div><div class="line">Address: 199.59.149.230</div><div class="line">Name:	twitter.com</div><div class="line">Address: 199.59.148.10</div></pre></td></tr></table></figure></p>
+<h3 id="dig"><a href="#dig" class="headerlink" title="dig"></a>dig</h3><p>dig 命令和 nslookup 十分相似，也是用来进行 DNS查询的，命令格式也很简单 <code>dig @server host</code> 即可。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 我把我的另一个域名 tingxueren.info 指向了 tingxueren.github.com 在 github 上面维护了自己的blog，可以用</span></div><div class="line"><span class="comment"># dig 查询下，会发现 ip 一致</span></div><div class="line"><span class="comment"># dig tingxueren.info</span></div><div class="line">$ dig @8.8.8.8 tingxueren.info</div><div class="line"></div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.1-P1 &lt;&lt;&gt;&gt; @8.8.8.8 tingxueren.info</div><div class="line">; (1 server found)</div><div class="line">;; global options: +cmd</div><div class="line">;; Got answer:</div><div class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 16481</div><div class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0</div><div class="line"></div><div class="line">;; QUESTION SECTION:</div><div class="line">;tingxueren.info.		IN	A</div><div class="line"></div><div class="line">;; ANSWER SECTION:</div><div class="line">tingxueren.info.	1800	IN	A	204.232.175.78</div><div class="line"></div><div class="line">;; Query time: 368 msec</div><div class="line">;; SERVER: 8.8.8.8<span class="comment">#53(8.8.8.8)</span></div><div class="line">;; WHEN: Sat Nov 24 19:23:45 2012</div><div class="line">;; MSG SIZE  rcvd: 49</div><div class="line"><span class="comment"># dig tingxueren.github.com</span></div><div class="line">dig @8.8.8.8 tingxueren.github.com</div><div class="line"></div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.1-P1 &lt;&lt;&gt;&gt; @8.8.8.8 tingxueren.github.com</div><div class="line">; (1 server found)</div><div class="line">;; global options: +cmd</div><div class="line">;; Got answer:</div><div class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 51234</div><div class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0</div><div class="line"></div><div class="line">;; QUESTION SECTION:</div><div class="line">;tingxueren.github.com.		IN	A</div><div class="line"></div><div class="line">;; ANSWER SECTION:</div><div class="line">tingxueren.github.com.	43200	IN	A	204.232.175.78</div><div class="line"></div><div class="line">;; Query time: 180 msec</div><div class="line">;; SERVER: 8.8.8.8<span class="comment">#53(8.8.8.8)</span></div><div class="line">;; WHEN: Sat Nov 24 19:26:58 2012</div><div class="line">;; MSG SIZE  rcvd: 55</div></pre></td></tr></table></figure></p>
+<h3 id="whois"><a href="#whois" class="headerlink" title="whois"></a>whois</h3><p><a href="http://zh.wikipedia.org/zh-cn/WHOIS" target="_blank" rel="external">WHOIS</a>（读作“Who is”，而非缩写）是用来查询互联网中域名的IP以及所有者等信息的传输协议。上面才查找 twitter 的错误 ip 的时候已经用过了，现在把刚才信息贴出来。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">$ whois 59.24.3.173</div><div class="line"><span class="comment"># 韩文显示不正常，省略</span></div><div class="line"><span class="comment"># ENGLISH</span></div><div class="line"></div><div class="line">KRNIC is not an ISP but a National Internet Registry similar to APNIC.</div><div class="line"></div><div class="line">[ Network Information ]</div><div class="line">IPv4 Address       : 59.0.0.0 - 59.31.255.255 (/11)</div><div class="line">Service Name       : KORNET</div><div class="line">Organization Name  : Korea Telecom</div><div class="line">Organization ID    : ORG1600</div><div class="line">Address            : 206, Jungja-dong, Bundang-gu, Sungnam-ci</div><div class="line">Zip Code           : 463-711</div><div class="line">Registration Date  : 20040831</div><div class="line"></div><div class="line">[ Admin Contact Information ]</div><div class="line">Name               : IP Administrator</div><div class="line">Phone              : +82-2-500-6630</div><div class="line">E-Mail             : kornet_ip@kt.com</div><div class="line"></div><div class="line">[ Tech Contact Information ]</div><div class="line">Name               : IP Manager</div><div class="line">Phone              : +82-2-500-6630</div><div class="line">E-Mail             : kornet_ip@kt.com</div><div class="line"></div><div class="line">[ Network Abuse Contact Information ]</div><div class="line">Name               : Network Abuse</div><div class="line">Phone              : +82-2-100-0000</div><div class="line">E-Mail             : abuse@kornet.net</div><div class="line"><span class="comment"># GFW 常常会把 “非法网站” 进行 DNS 投毒，解析到韩国的 ip，韩国是躺着也中枪</span></div></pre></td></tr></table></figure></p>
+<h3 id="iftop-和-ntop"><a href="#iftop-和-ntop" class="headerlink" title="iftop 和 ntop"></a>iftop 和 ntop</h3><p>这两个工具是用来做流量监控的，iftop 比较简陋，提供的是字符界面，ntop 安装后可以在本机浏览器打开 3000 端口会有图形界面的，内容相当的详细。对这两个工具了解的不多，只是刚开始用，可以看下下面这两个帖子。</p>
+<ol>
+<li><a href="http://www.vpser.net/manage/iftop.html" target="_blank" rel="external">Linux流量监控工具 - iftop (最全面的iftop教程)</a></li>
+<li><a href="http://netslyz.blog.51cto.com/1006247/407510/" target="_blank" rel="external">在RHEL5下使用NTOP监测网络流量</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/11/08/dai-ma-gao-liang-zhe-teng-bi-ji/" rel="next" title="代码高亮折腾笔记">
+                <i class="fa fa-chevron-left"></i> 代码高亮折腾笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/11/29/today-is-sb/" rel="prev" title="today is SB">
+                today is SB <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用工具"><span class="nav-number">1.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ping"><span class="nav-number">1.1.</span> <span class="nav-text">ping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifconfig"><span class="nav-number">1.2.</span> <span class="nav-text">ifconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#traceroute"><span class="nav-number">1.3.</span> <span class="nav-text">traceroute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nslookup"><span class="nav-number">1.4.</span> <span class="nav-text">nslookup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dig"><span class="nav-number">1.5.</span> <span class="nav-text">dig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whois"><span class="nav-number">1.6.</span> <span class="nav-text">whois</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iftop-和-ntop"><span class="nav-number">1.7.</span> <span class="nav-text">iftop 和 ntop</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2012/11/24/linux-chang-yong-wang-luo-gong-ju/';
+      var disqus_title = "Linux 常用网络工具";
+      var disqus_url = 'http://tingxueren.com/2012/11/24/linux-chang-yong-wang-luo-gong-ju/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

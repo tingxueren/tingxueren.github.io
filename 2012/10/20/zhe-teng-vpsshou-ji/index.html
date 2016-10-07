@@ -1,0 +1,715 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前几天闲逛网页发现了个网站上介绍的一个美国 vps 首月免费，兴冲冲的去注册，把玩了一个下午。环境什么都配置好的时候突然发现登陆不上了，然后就收到了邮件，只提供 3 个小时的免费试用时间，然后我的 vps 就被删除了。靠他大爷的，郁闷了，气的都要吐血了。
+一怒之下准备花钱买个 vps 好好玩玩的，linode 是首选，但是因为是穷学生，没米，而且也没有信用卡，玩不起啊。正好逛逛 G+ 发现有人买了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="折腾vps手记">
+<meta property="og:url" content="http://tingxueren.com/2012/10/20/zhe-teng-vpsshou-ji/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="前几天闲逛网页发现了个网站上介绍的一个美国 vps 首月免费，兴冲冲的去注册，把玩了一个下午。环境什么都配置好的时候突然发现登陆不上了，然后就收到了邮件，只提供 3 个小时的免费试用时间，然后我的 vps 就被删除了。靠他大爷的，郁闷了，气的都要吐血了。
+一怒之下准备花钱买个 vps 好好玩玩的，linode 是首选，但是因为是穷学生，没米，而且也没有信用卡，玩不起啊。正好逛逛 G+ 发现有人买了">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="折腾vps手记">
+<meta name="twitter:description" content="前几天闲逛网页发现了个网站上介绍的一个美国 vps 首月免费，兴冲冲的去注册，把玩了一个下午。环境什么都配置好的时候突然发现登陆不上了，然后就收到了邮件，只提供 3 个小时的免费试用时间，然后我的 vps 就被删除了。靠他大爷的，郁闷了，气的都要吐血了。
+一怒之下准备花钱买个 vps 好好玩玩的，linode 是首选，但是因为是穷学生，没米，而且也没有信用卡，玩不起啊。正好逛逛 G+ 发现有人买了">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2012/10/20/zhe-teng-vpsshou-ji/"/>
+
+  <title> 折腾vps手记 | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                折腾vps手记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2012-10-20T18:55:00+08:00" content="2012-10-20">
+              2012-10-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2012/10/20/zhe-teng-vpsshou-ji/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/10/20/zhe-teng-vpsshou-ji/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前几天闲逛网页发现了个网站上介绍的一个美国 vps 首月免费，兴冲冲的去注册，把玩了一个下午。环境什么都配置好的时候突然发现登陆不上了，然后就收到了邮件，只提供 3 个小时的免费试用时间，然后我的 vps 就被删除了。靠他大爷的，郁闷了，气的都要吐血了。</p>
+<p>一怒之下准备花钱买个 vps 好好玩玩的，linode 是首选，但是因为是穷学生，没米，而且也没有信用卡，玩不起啊。正好逛逛 G+ 发现有人买了个日本的 vps， 配置还可以，关键是还很便宜，很对胃口，还支持支付宝，真是大大的良心啊。下单，买了一个，5 分钟后就可以 ssh 登陆了，确实很快速。</p>
+<p>vps 配置还可以，虽然是 openVZ 的架构，但是保证有 512M 的内存，最大 1G 的内存, 10G 硬盘，100M 网络，流量限，感觉基本上够用了。只要 490 日元， 淘宝支付 39 大洋，还是挺好的，延迟也能接受，实验室基本上是 100ms， 宿舍的话 200ms，都能接受。</p>
+<h2 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h2><p>vps 开通后，就要开始进行配置了。我选择的系统是 ubuntu 10.04, 毕竟用 ubuntu 桌面版很长一段时间了，前几个月也在实验室的旧机器配置过 ubuntu server ，我相信这个系统我还是能搞定的。拿到 vps 的时候想把它升级到 12.04, 换日本的源，然后升级，最后升级完成后重启 vps 一直卡死了。没有办法只得到网页的控制面板将 vps 重置了。查找了下资料发现 openVZ 的内核和 host 的内核要一样的，如果服务商不支持高版本的系统的话 vps 是不能升级到高版本的，那就这样吧，10.04 继续用吧。</p>
+<ul>
+<li>新建帐号</li>
+</ul>
+<p>vps 开通的时候只有 root 帐号，一直用 root 帐号的话会不安全的，也没有必要，首先就要建立自己的常用帐号。可以使用以下命令：</p>
+<pre><code># 建立 you_name 帐号，并加入 sudo 组    
+# useradd  -G sudo -m -s /bin/bash   you_name
+
+# 设置密码
+# passwd you_name   
+
+# 加入 adm 组，阅读系统 log
+# usermod -G adm -a you_name
+</code></pre><p>这样就建立了个有管理员权限的帐号，一般可以用这个帐号管理 vps，而不需要用<br>root 帐号。</p>
+<ul>
+<li>修改时区别和locale设置</li>
+</ul>
+<p>由于 vps 所在地是日本，时区为东九区，vps 的时间比我们的本地时间快了 1 个小时，看起来很不爽，修改时区还是很简单的，执行下述命令就好。</p>
+<pre><code>$ sudo dpkg-reconfigure tzdata
+# 选择 Asia/Shanghai 一切 ok
+</code></pre><p>同样，因为是日本的服务器，locale 设置的不对，执行命令时常常会出现下面的报错<br>提示:</p>
+<pre><code>    perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+</code></pre><p>因为是服务器，en_US.utf8 才是王道，下面就来安装 en_US.utf8:</p>
+<pre><code>root@ubuntu-vps:~# cd /usr/share/locales
+root@ubuntu-vps:/usr/share/locales# ls
+install-language-pack  remove-language-pack
+root@ubuntu-vps:/usr/share/locales# ./install-language-pack en_US
+Generating locales...
+  en_US.UTF-8... done
+  Generation complete.
+</code></pre><p>执行 locale 看安装是否成功:      </p>
+<pre><code>    roots@ubuntu-vps:~# locale
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_CTYPE=&quot;en_US.UTF-8&quot;
+LC_NUMERIC=en_US.UTF-8
+LC_TIME=en_US.UTF-8
+LC_COLLATE=&quot;en_US.UTF-8&quot;
+LC_MONETARY=en_US.UTF-8
+LC_MESSAGES=&quot;en_US.UTF-8&quot;
+LC_PAPER=en_US.UTF-8
+LC_NAME=en_US.UTF-8
+LC_ADDRESS=en_US.UTF-8
+LC_TELEPHONE=en_US.UTF-8
+LC_MEASUREMENT=en_US.UTF-8
+LC_IDENTIFICATION=en_US.UTF-8
+LC_ALL=
+</code></pre><p>最后还要执行 update-locale 命令，否则在 /var/log/auth.log 中会出现<br>“pam_env can’t open /etc/default/locale “ 的错误。</p>
+<ul>
+<li>修改 ssh 设置，增强安全性</li>
+</ul>
+<p>ssh 基本是我们管理 vps 的最好的手段了，保护好 ssh 的连接对增强 vps 的安全性有重大的作用。可以从三个方面入手，一个是修改 ssh 默认的 22 端口到自定义端口；其二是禁止远程 root 登陆；其三是禁止密码登陆，只用密钥登陆。基本上是修改<br>ssh 的配置文件，下面是具体步骤。</p>
+<ol>
+<li><p>修改 ssh port ，禁止 root 远程登陆</p>
+<pre><code># 修改 ssh 配置文件，在文件中修改下面选项
+sudo vi /etc/ssh/sshd_config
+# 修改 ssh port， 先增加个端口，重启 ssh 成功后再把默认端口
+# 删除，防止发生不能ssh登陆的悲剧
+port ***
+# 禁止 root 登陆
+PermitRootLogin no
+# 重启 ssh 服务
+sudo service ssh restart
+</code></pre></li>
+<li><p>设置密钥登录</p>
+<pre><code># 本地生成密钥，在本机 .ssh 目录下运行下面的命令
+# 密钥名可以自定义，如默认的id_rsa
+ssh-keygen
+# 拷贝公钥到 vps
+scp ~/.ssh/id_rsa.pub example_user@vps_ip
+# vps 上建立 .ssh 目录
+mkdir .ssh
+# 拷贝并重命名公钥 
+mv id_rsa.pub .ssh/authorized_keys
+# 增强公钥的安全性
+chown -R example_user:example_user .ssh
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+
+# 测试
+$ ssh -p port -i .ssh/id_rsa example_user@vps_ip
+# 如果成功可以禁止密码登陆
+sudo vi /etc/ssh/sshd_config
+PasswordAuthentication no
+# 重启 ssh  
+sudo service ssh restart
+</code></pre><ul>
+<li>修改主机名称</li>
+</ul>
+</li>
+</ol>
+<p>vps 的默认主机名称是一段数值，看起来很不爽，准备修改成自己喜欢的名字</p>
+<pre><code># 修改 /etc/hosts
+127.0.1.1    oldname
+替换为
+127.0.1.1    newname
+# 编辑 /etc/hostname
+$ sudo echo &quot;newname&quot; &gt; /etc/hostname
+# 运行下面命令
+$ sudo hostname newname
+# 必要时可能要重启机器
+</code></pre><h2 id="安装-LNMP-环境"><a href="#安装-LNMP-环境" class="headerlink" title="安装 LNMP 环境"></a>安装 LNMP 环境</h2><p>LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RadHat、Debian/Ubuntu<br>VPS(VDS)或独立主机安装LNMP(Nginx、MySQL、PHP、phpMyAdmin)生产环境的Shell程序。    </p>
+<p>具体步骤可以参考 <a href="http://lnmp.org/" target="_blank" rel="external">lnmp.org</a> 的介绍。<br>安装时间比较长，需要耐心等待。</p>
+<h2 id="安装-openvpn"><a href="#安装-openvpn" class="headerlink" title="安装 openvpn"></a>安装 openvpn</h2><p>在这个 GFW 猖狂的年代，vpn 已经成为了上网的必备工具，有了 vps 后在上面安装<br>好了 vpn 就可以享受无阻碍的网络，还省了购买 vpn 的钱。在 vps 上安装 openvpn<br>网上有很多不错的教程，我主要参考了以下的教程设置的。</p>
+<p>教程1：<a href="http://www.vpser.net/build/linode-install-openvpn.html" target="_blank" rel="external">Linode VPS OpenVPN安装配置教程</a><br>教程2：<a href="http://www.douban.com/note/97996409/" target="_blank" rel="external">OpenVZ vps下的openvpn安装</a><br>    特别注意的是，因为是 openVZ 的 vps 要用DST NAT<br>    iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT –to vps_ip</p>
+<p>基本上按照上述的教程即可安装好 openvpn。</p>
+<h2 id="设置-iptables"><a href="#设置-iptables" class="headerlink" title="设置 iptables"></a>设置 iptables</h2><p>iptables 是 linux 的防火墙，为了 vps 的安全必须按照一定的规则过滤进出 vps 的<br>数据，准许必要的端口开放，关掉非必要的端口，减少被攻击的可能性。一般来说开放<br>ssh，ftp，http，https，mysql，openvpn 的端口即可，这个是我的 iptables 设置的<a href="/codes/iptables_init.sh">脚本</a>。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="http://library.linode.com/" target="_blank" rel="external">library.linode.com</a></li>
+<li><a href="http://blog.chinaunix.net/uid-27029423-id-3328463.html" target="_blank" rel="external">openvpn_server参数详解</a></li>
+<li><a href="使用 OpenVPN 服务器翻墙的相关问题解决">使用 OpenVPN 服务器翻墙的相关问题解决</a></li>
+<li><a href="http://www.networkvps.com/index.php/archives/1135" target="_blank" rel="external">Iptables 设置脚本一例</a></li>
+<li><a href="http://www.zrblog.net/2284.html" target="_blank" rel="external">VPS简单性能测试命令</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/09/10/install-dropbox-in-linux/" rel="next" title="install dropbox in linux">
+                <i class="fa fa-chevron-left"></i> install dropbox in linux
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/11/02/zai-lnmphuan-jing-xia-an-zhuang-wordpress/" rel="prev" title="在LNMP环境下安装wordpress">
+                在LNMP环境下安装wordpress <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化配置"><span class="nav-number">1.</span> <span class="nav-text">初始化配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-LNMP-环境"><span class="nav-number">2.</span> <span class="nav-text">安装 LNMP 环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-openvpn"><span class="nav-number">3.</span> <span class="nav-text">安装 openvpn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置-iptables"><span class="nav-number">4.</span> <span class="nav-text">设置 iptables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2012/10/20/zhe-teng-vpsshou-ji/';
+      var disqus_title = "折腾vps手记";
+      var disqus_url = 'http://tingxueren.com/2012/10/20/zhe-teng-vpsshou-ji/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

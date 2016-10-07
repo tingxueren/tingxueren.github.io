@@ -1,0 +1,602 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="很久没有写 blog 了感觉 blog 已经荒废了。上一篇文章在 2012 年底，现在都 2013 年了，2 个多月就这么过去了。在这两个多月从大部分时间在家过年什么都没有做，一直在歇着。1 月底的时候 yardvps 打 5 折， 把 blog 迁移到了这个新的 vps 了，感觉运行很稳定，价格还是很实惠的。blog 搬家没有遇到什么问题，但是今天在用 tar 备份网站的时候遇到点问题，如何排除">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tar 排除指定目录">
+<meta property="og:url" content="http://tingxueren.com/2013/03/06/tar-pai-chu-zhi-ding-mu-lu/index.html">
+<meta property="og:site_name" content="tingxueren.com">
+<meta property="og:description" content="很久没有写 blog 了感觉 blog 已经荒废了。上一篇文章在 2012 年底，现在都 2013 年了，2 个多月就这么过去了。在这两个多月从大部分时间在家过年什么都没有做，一直在歇着。1 月底的时候 yardvps 打 5 折， 把 blog 迁移到了这个新的 vps 了，感觉运行很稳定，价格还是很实惠的。blog 搬家没有遇到什么问题，但是今天在用 tar 备份网站的时候遇到点问题，如何排除">
+<meta property="og:updated_time" content="2016-10-07T00:37:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tar 排除指定目录">
+<meta name="twitter:description" content="很久没有写 blog 了感觉 blog 已经荒废了。上一篇文章在 2012 年底，现在都 2013 年了，2 个多月就这么过去了。在这两个多月从大部分时间在家过年什么都没有做，一直在歇着。1 月底的时候 yardvps 打 5 折， 把 blog 迁移到了这个新的 vps 了，感觉运行很稳定，价格还是很实惠的。blog 搬家没有遇到什么问题，但是今天在用 tar 备份网站的时候遇到点问题，如何排除">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://tingxueren.com/2013/03/06/tar-pai-chu-zhi-ding-mu-lu/"/>
+
+  <title> tar 排除指定目录 | tingxueren.com </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">tingxueren.com</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">reading && thinking</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                tar 排除指定目录
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2013-03-06T19:07:00+08:00" content="2013-03-06">
+              2013-03-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2013/03/06/tar-pai-chu-zhi-ding-mu-lu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/03/06/tar-pai-chu-zhi-ding-mu-lu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>很久没有写 blog 了感觉 blog 已经荒废了。上一篇文章在 2012 年底，现在都 2013 年了，2 个多月就这么过去了。在这两个多月从大部分时间在家过年什么都没有做，一直在歇着。1 月底的时候 yardvps 打 5 折， 把 blog 迁移到了这个新的 vps 了，感觉运行很稳定，价格还是很实惠的。blog 搬家没有遇到什么问题，但是今天在用 tar 备份网站的时候遇到点问题，如何排除指定的目录。</p>
+<h2 id="什么是-tar"><a href="#什么是-tar" class="headerlink" title="什么是 tar"></a>什么是 tar</h2><p>Unix和类Unix系统上的压缩打包工具，可以将多个文件合并为一个文件，打包后的文件名亦为“tar”。目前，tar文件格式已经成为POSIX标准，最初是POSIX.1-1988，目前是POSIX.1-2001。 本程序最初的设计目的是将文件备份到磁带上(tape archive)，因而得名tar。(摘抄自维基百科)</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>我准备是用 tar 备份我的 wordpress 网站的，但是里面有一个目录是 wp-content 下面的 backup 目录有以前的备份，我想把这个排除掉，想起以前用 tar 备份系统的时候用的 –exclude 参数，开始是这么写的：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot</div><div class="line">tar cpzf www.mars.tingxuere.com.tar.gz www.mars.tingxueren.com --exclude=www.mars.tingxueren.com/wp-content/backup/</div></pre></td></tr></table></figure></p>
+<p>很遗憾运行后还是不行，我以为是路径写的有问题，下面用绝对路径<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot</div><div class="line">tar cpzf www.mars.tingxuere.com.tar.gz www.mars.tingxueren.com --exclude=/home/wwwroot/www.mars.tingxueren.com/wp-content/backup/</div></pre></td></tr></table></figure></p>
+<p>同样还是不行的，不知道为什么，感觉可能是 –exclude 参数我的理解有问题。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>首先 man tar 看看 –exclude 参数是干吗的:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--exclude=PATTERN</div><div class="line">      exclude files, given as a PATTERN</div></pre></td></tr></table></figure></p>
+<p>从上面看到 –exclude 排除的目录不是目录的路径，而是按照正则表达式的形式排除的，PATTERN是也。理解错误在 –exclude 后面跟路径当然达不到我的目标，下面是个很简单的实验：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">pwd</span></div><div class="line">/home/user</div><div class="line">$ mkdir <span class="built_in">test</span></div><div class="line">$ <span class="built_in">cd</span> <span class="built_in">test</span></div><div class="line">$ mkdir <span class="built_in">test</span>01 <span class="built_in">test</span>02</div><div class="line">$ <span class="built_in">cd</span> <span class="built_in">test</span>01</div><div class="line">$ touch <span class="built_in">test</span>01.txt</div><div class="line">$ <span class="built_in">cd</span> ../<span class="built_in">test</span>02</div><div class="line">$ touch <span class="built_in">test</span>02.txt</div><div class="line">$ <span class="built_in">cd</span> </div><div class="line">$ tar cvzf test.tar.gz <span class="built_in">test</span> --exclude=/home/user/<span class="built_in">test</span>/<span class="built_in">test</span>02</div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>02/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>02/<span class="built_in">test</span>02.txt</div><div class="line"><span class="comment"># 可以看到 --exclude 没有起到效果</span></div><div class="line">$ tar cvzf test.tar.gz <span class="built_in">test</span> --exclude=<span class="built_in">test</span>02/</div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>02/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>02/<span class="built_in">test</span>02.txt</div><div class="line"><span class="comment"># --exclude 依然没有效果，因为 tar 打包过程中找不到与 test02/ 匹配的项目，注意最后的`/`</span></div><div class="line">$ tar cvzf test.tar.gz <span class="built_in">test</span> --exclude=<span class="built_in">test</span>02</div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="comment"># 顺利的达到目标</span></div><div class="line"><span class="comment"># --exclude 后面是正则表达式，还可以排除文件夹中具体的文件</span></div><div class="line"><span class="comment"># 保留 test02 文件夹，去除 test02.txt</span></div><div class="line">$ tar cvzf test.tar.gz <span class="built_in">test</span> --exclude=<span class="built_in">test</span>02/*.txt</div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>02/</div></pre></td></tr></table></figure></p>
+<h2 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h2><p>在搜索过程中看到了有人写到：在 GNU tar 中用 –exclude 参数时，被打包的文件必须要放在最后，否则没有效果，但是我实验了下发现被打包文件放在前面和后面都是一样的，不知是这个 bug 被修复了，还是以讹传讹的错误：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ tar --version</div><div class="line">tar (GNU tar) 1.26</div><div class="line">Copyright (C) 2011 Free Software Foundation, Inc.</div><div class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.</div><div class="line">This is free software: you are free to change and redistribute it.</div><div class="line">There is NO WARRANTY, to the extent permitted by law.</div><div class="line"></div><div class="line">Written by John Gilmore and Jay Fenlason.</div><div class="line"><span class="comment"># test 放在 --exclude 前面</span></div><div class="line">$ tar cvzf test.tar.gz <span class="built_in">test</span> --exclude=<span class="built_in">test</span>02</div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="comment"># test 放在 --exclude 后面</span></div><div class="line">$ tar cvzf test.tar.gz  --exclude=<span class="built_in">test</span>02 <span class="built_in">test</span></div><div class="line"><span class="built_in">test</span>/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/</div><div class="line"><span class="built_in">test</span>/<span class="built_in">test</span>01/<span class="built_in">test</span>01.txt</div><div class="line"><span class="comment"># 可以看到上述两种写法，执行效果一致</span></div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/12/27/2012nian-du-zong-jie/" rel="next" title="2012年度总结">
+                <i class="fa fa-chevron-left"></i> 2012年度总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/03/23/vpsan-zhuang-delugebing-she-zhi-iptablesgui-ze/" rel="prev" title="vps 安装 deluge 并设置 iptables 规则">
+                vps 安装 deluge 并设置 iptables 规则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="zhangdongsheng1224@gmail.com" />
+          <p class="site-author-name" itemprop="name">zhangdongsheng1224@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">reading && thinking</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-tar"><span class="nav-number">1.</span> <span class="nav-text">什么是 tar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验"><span class="nav-number">3.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#疑惑"><span class="nav-number">4.</span> <span class="nav-text">疑惑</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangdongsheng1224@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'tingxueren-github-io';
+      var disqus_identifier = '2013/03/06/tar-pai-chu-zhi-ding-mu-lu/';
+      var disqus_title = "tar 排除指定目录";
+      var disqus_url = 'http://tingxueren.com/2013/03/06/tar-pai-chu-zhi-ding-mu-lu/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
