@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPosts, paginate, getPostUrl, PER_PAGE } from '../../utils/blog.js';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const total = Math.max(1, Math.ceil(posts.length / PER_PAGE));
+  return Array.from({ length: total - 1 }, (_, i) => ({ params: { page: String(i + 2) } }));
+}
+
+const page = Number(Astro.params.page || '1');
+const posts = await getAllPosts();
+const pager = paginate(posts, page, PER_PAGE);
+if (page <= 1) return Astro.redirect('/');
+---
+<BaseLayout title={`第 ${pager.current} 页 - tingxueren.com`}>
+  <ul>
+    {pager.items.map((post) => (
+      <li>
+        <a href={getPostUrl(post)}>{post.data.title}</a>
+        <div class="meta">{post.data.date.toISOString().slice(0, 10)}</div>
+      </li>
+    ))}
+  </ul>
+  <p>
+    {pager.current > 1 && <a href={pager.current === 2 ? '/' : `/page/${pager.current - 1}/`}>上一页</a>}
+    {' '}
+    {pager.current < pager.totalPages && <a href={`/page/${pager.current + 1}/`}>下一页</a>}
+  </p>
+</BaseLayout>

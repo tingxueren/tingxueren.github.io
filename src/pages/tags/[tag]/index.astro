@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostUrl } from '../../../utils/blog.js';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const set = new Set<string>();
+  for (const p of posts) for (const t of p.data.tags) set.add(t);
+  return [...set].map((tag) => ({ params: { tag: encodeURIComponent(tag) }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const posts = (await getAllPosts()).filter((p) => p.data.tags.includes(tag));
+---
+<BaseLayout title={`标签: ${tag} - tingxueren.com`}>
+  <h2>标签：{tag}</h2>
+  <ul>
+    {posts.map((post) => <li><a href={getPostUrl(post)}>{post.data.title}</a> <span class="meta">{post.data.date.toISOString().slice(0,10)}</span></li>)}
+  </ul>
+</BaseLayout>

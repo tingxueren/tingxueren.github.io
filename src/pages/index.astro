@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllPosts, paginate, getPostUrl, PER_PAGE } from '../utils/blog.js';
+
+const posts = await getAllPosts();
+const pager = paginate(posts, 1, PER_PAGE);
+---
+<BaseLayout title="tingxueren.com">
+  <ul>
+    {pager.items.map((post) => (
+      <li>
+        <a href={getPostUrl(post)}>{post.data.title}</a>
+        <div class="meta">{post.data.date.toISOString().slice(0, 10)}</div>
+      </li>
+    ))}
+  </ul>
+  {pager.totalPages > 1 && <p><a href="/page/2/">下一页</a></p>}
+</BaseLayout>

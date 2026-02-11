@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostUrl } from '../../utils/blog.js';
+const posts = await getAllPosts();
+const byYear = posts.reduce((acc, p) => {
+  const y = String(p.data.date.getFullYear());
+  (acc[y] ||= []).push(p);
+  return acc;
+}, {});
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+---
+<BaseLayout title="归档 - tingxueren.com">
+  {years.map((y) => (
+    <section>
+      <h2>{y}</h2>
+      <ul>
+        {byYear[y].map((post) => (
+          <li><a href={getPostUrl(post)}>{post.data.title}</a> <span class="meta">{post.data.date.toISOString().slice(0,10)}</span></li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+const { title, description = 'reading && thinking' } = Astro.props;
+---
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      :root{--fg:#222;--muted:#666;--bg:#fff;--link:#0b57d0} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;max-width:900px;margin:0 auto;padding:24px;background:var(--bg);color:var(--fg);line-height:1.75}
+      a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+      header nav{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 20px}
+      .meta{color:var(--muted);font-size:.92rem}
+      code{background:#f5f5f5;padding:2px 4px;border-radius:4px}
+      pre{padding:14px;overflow:auto;border-radius:8px}
+      footer{margin-top:40px;color:var(--muted);font-size:.9rem}
+      ul{padding-left:20px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">tingxueren.com</a></h1>
+      <div class="meta">reading && thinking</div>
+      <nav>
+        <a href="/">首页</a>
+        <a href="/archives/">归档</a>
+        <a href="/tags/">标签</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>© tingxueren</footer>
+  </body>
+</html>
