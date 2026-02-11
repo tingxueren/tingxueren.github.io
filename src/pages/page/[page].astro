@@ -13,8 +13,8 @@ const posts = await getAllPosts();
 const pager = paginate(posts, page, PER_PAGE);
 if (page <= 1) return Astro.redirect('/');
 ---
-<BaseLayout title={`第 ${pager.current} 页 - tingxueren.com`}>
-  <ul>
+<BaseLayout title={`第 ${pager.current} 页 - tingxueren.com`} currentPath={Astro.url.pathname}>
+  <ul class="post-list">
     {pager.items.map((post) => (
       <li>
         <a href={getPostUrl(post)}>{post.data.title}</a>
@@ -22,9 +22,13 @@ if (page <= 1) return Astro.redirect('/');
       </li>
     ))}
   </ul>
-  <p>
-    {pager.current > 1 && <a href={pager.current === 2 ? '/' : `/page/${pager.current - 1}/`}>上一页</a>}
-    {' '}
+
+  <p class="pager">
+    {pager.current > 1 ? (
+      <a href={pager.current === 2 ? '/' : `/page/${pager.current - 1}/`}>上一页</a>
+    ) : (
+      <span></span>
+    )}
     {pager.current < pager.totalPages && <a href={`/page/${pager.current + 1}/`}>下一页</a>}
   </p>
 </BaseLayout>

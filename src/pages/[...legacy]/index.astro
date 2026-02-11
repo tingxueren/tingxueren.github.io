@@ -13,13 +13,17 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 ---
-<BaseLayout title={`${post.data.title} - tingxueren.com`} description={post.data.description || post.data.title}>
+<BaseLayout
+  title={`${post.data.title} - tingxueren.com`}
+  description={post.data.description || post.data.title}
+  currentPath={Astro.url.pathname}
+>
   <article>
     <h1>{post.data.title}</h1>
     <p class="meta">{post.data.date.toISOString().replace('T', ' ').slice(0, 16)}</p>
     <Content />
     {post.data.tags.length > 0 && (
-      <p class="meta">标签：{post.data.tags.join(', ')}</p>
+      <p class="meta">标签：{post.data.tags.join(' / ')}</p>
     )}
   </article>
 </BaseLayout>

@@ -5,8 +5,8 @@ import { getAllPosts, paginate, getPostUrl, PER_PAGE } from '../utils/blog.js';
 const posts = await getAllPosts();
 const pager = paginate(posts, 1, PER_PAGE);
 ---
-<BaseLayout title="tingxueren.com">
-  <ul>
+<BaseLayout title="tingxueren.com" currentPath={Astro.url.pathname}>
+  <ul class="post-list">
     {pager.items.map((post) => (
       <li>
         <a href={getPostUrl(post)}>{post.data.title}</a>
@@ -14,5 +14,10 @@ const pager = paginate(posts, 1, PER_PAGE);
       </li>
     ))}
   </ul>
-  {pager.totalPages > 1 && <p><a href="/page/2/">下一页</a></p>}
+  {pager.totalPages > 1 && (
+    <p class="pager">
+      <span></span>
+      <a href="/page/2/">下一页</a>
+    </p>
+  )}
 </BaseLayout>

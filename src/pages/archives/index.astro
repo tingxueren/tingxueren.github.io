@@ -1,21 +1,29 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostUrl } from '../../utils/blog.js';
+
 const posts = await getAllPosts();
-const byYear = posts.reduce((acc, p) => {
+
+const byYearMonth = posts.reduce((acc, p) => {
   const y = String(p.data.date.getFullYear());
-  (acc[y] ||= []).push(p);
+  const m = String(p.data.date.getMonth() + 1).padStart(2, '0');
+  const key = `${y}-${m}`;
+  (acc[key] ||= []).push(p);
   return acc;
 }, {});
-const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+const yearMonths = Object.keys(byYearMonth).sort((a, b) => b.localeCompare(a));
 ---
-<BaseLayout title="归档 - tingxueren.com">
-  {years.map((y) => (
+<BaseLayout title="归档 - tingxueren.com" currentPath={Astro.url.pathname}>
+  {yearMonths.map((ym) => (
     <section>
-      <h2>{y}</h2>
-      <ul>
-        {byYear[y].map((post) => (
-          <li><a href={getPostUrl(post)}>{post.data.title}</a> <span class="meta">{post.data.date.toISOString().slice(0,10)}</span></li>
+      <h2>{ym}</h2>
+      <ul class="post-list">
+        {byYearMonth[ym].map((post) => (
+          <li>
+            <a href={getPostUrl(post)}>{post.data.title}</a>
+            <span class="meta">{post.data.date.toISOString().slice(0, 10)}</span>
+          </li>
         ))}
       </ul>
     </section>

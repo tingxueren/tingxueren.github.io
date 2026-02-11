@@ -1,38 +1,250 @@
 ---
-const { title, description = 'reading && thinking' } = Astro.props;
+const {
+  title,
+  description = 'reading && thinking',
+  currentPath = Astro.url?.pathname ?? '/'
+} = Astro.props;
+
+const pageTitle = title || 'tingxueren.com';
+const canonical = new URL(currentPath, Astro.site ?? Astro.url).toString();
 ---
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" />
-    <style>
-      :root{--fg:#222;--muted:#666;--bg:#fff;--link:#0b57d0} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;max-width:900px;margin:0 auto;padding:24px;background:var(--bg);color:var(--fg);line-height:1.75}
-      a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
-      header nav{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 20px}
-      .meta{color:var(--muted);font-size:.92rem}
-      code{background:#f5f5f5;padding:2px 4px;border-radius:4px}
-      pre{padding:14px;overflow:auto;border-radius:8px}
-      footer{margin-top:40px;color:var(--muted);font-size:.9rem}
-      ul{padding-left:20px}
+    <style is:global>
+      :root {
+        --bg: #0b1220;
+        --bg-soft: #111b2e;
+        --panel: rgba(17, 27, 46, 0.66);
+        --line: rgba(125, 156, 214, 0.24);
+        --text: #dce7ff;
+        --muted: #91a0c3;
+        --link: #78a9ff;
+        --link-hover: #9ec0ff;
+        --glow: rgba(120, 169, 255, 0.28);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 20% -10%, rgba(61, 99, 175, 0.24), transparent 45%),
+          radial-gradient(circle at 90% 10%, rgba(65, 134, 196, 0.2), transparent 42%),
+          linear-gradient(180deg, #070c17 0%, var(--bg) 50%, #070c17 100%);
+        font-family: "Inter", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+        line-height: 1.8;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .container {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 24px 18px 56px;
+      }
+
+      .site-header,
+      .site-main,
+      .site-footer {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 34px rgba(7, 13, 24, 0.45);
+      }
+
+      .site-header {
+        padding: 22px 24px 18px;
+      }
+
+      .site-main {
+        margin-top: 16px;
+        padding: 22px 24px;
+      }
+
+      .site-footer {
+        margin-top: 16px;
+        padding: 16px 24px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .brand {
+        margin: 0;
+        font-size: clamp(1.5rem, 3.2vw, 2rem);
+        letter-spacing: 0.03em;
+      }
+
+      .brand a { color: var(--text); text-decoration: none; }
+
+      .tagline {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      nav {
+        margin-top: 16px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+        transition: color .2s ease;
+      }
+
+      a:hover { color: var(--link-hover); }
+
+      nav a {
+        padding: 6px 10px;
+        border-radius: 9px;
+        border: 1px solid transparent;
+      }
+
+      nav a:hover {
+        border-color: var(--line);
+        background: rgba(120, 169, 255, 0.08);
+      }
+
+      h1,h2,h3 { line-height: 1.35; margin: 0 0 .8em; }
+      h1 { font-size: clamp(1.45rem, 3vw, 1.85rem); }
+      h2 { font-size: 1.26rem; margin-top: 1.6em; }
+      h3 { font-size: 1.08rem; margin-top: 1.35em; }
+      p { margin: .86em 0; }
+
+      ul, ol { padding-left: 1.35rem; }
+      li + li { margin-top: .4em; }
+
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 1.8rem 0;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .post-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .post-list li {
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(8, 14, 27, 0.32);
+      }
+
+      .post-list li a {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .pager {
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .pager a,
+      .pill {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(10, 19, 35, 0.5);
+      }
+
+      article {
+        overflow-wrap: break-word;
+      }
+
+      article img {
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
+      pre {
+        margin: 1rem 0;
+        padding: .9rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: #0a1324 !important;
+        overflow: auto;
+        box-shadow: inset 0 0 0 1px rgba(120, 169, 255, 0.05);
+      }
+
+      code {
+        font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      :not(pre) > code {
+        font-size: 0.92em;
+        padding: .12em .34em;
+        border-radius: 6px;
+        border: 1px solid rgba(125, 156, 214, 0.2);
+        background: rgba(10, 19, 35, 0.68);
+      }
+
+      blockquote {
+        margin: 1rem 0;
+        padding: .45rem 0 .45rem 1rem;
+        border-left: 3px solid var(--link);
+        color: #c6d5f7;
+      }
+
+      .tag-cloud {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .tag-cloud li a { margin-right: 4px; }
+
+      @media (max-width: 640px) {
+        .container { padding: 14px 10px 28px; }
+        .site-header, .site-main, .site-footer { border-radius: 10px; }
+        .site-main { padding: 18px 16px; }
+        .site-header { padding: 18px 16px 16px; }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1><a href="/">tingxueren.com</a></h1>
-      <div class="meta">reading && thinking</div>
-      <nav>
-        <a href="/">首页</a>
-        <a href="/archives/">归档</a>
-        <a href="/tags/">标签</a>
-        <a href="/rss.xml">RSS</a>
-      </nav>
-    </header>
-    <main>
-      <slot />
-    </main>
-    <footer>© tingxueren</footer>
+    <div class="container">
+      <header class="site-header">
+        <h1 class="brand"><a href="/">tingxueren.com</a></h1>
+        <p class="tagline">reading && thinking</p>
+        <nav>
+          <a href="/">首页</a>
+          <a href="/archives/">归档</a>
+          <a href="/tags/">标签</a>
+          <a href="/rss.xml">RSS</a>
+        </nav>
+      </header>
+      <main class="site-main">
+        <slot />
+      </main>
+      <footer class="site-footer">© tingxueren</footer>
+    </div>
   </body>
 </html>

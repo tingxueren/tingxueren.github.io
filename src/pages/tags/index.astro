@@ -1,11 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts } from '../../utils/blog.js';
+
 const posts = await getAllPosts();
 const tags = new Map<string, number>();
-for (const p of posts) for (const t of p.data.tags) tags.set(t, (tags.get(t) || 0) + 1);
+for (const p of posts) {
+  for (const t of p.data.tags) tags.set(t, (tags.get(t) || 0) + 1);
+}
+
 const list = [...tags.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 ---
-<BaseLayout title="标签 - tingxueren.com">
-  {list.length === 0 ? <p>暂无标签</p> : <ul>{list.map(([t,c]) => <li><a href={`/tags/${encodeURIComponent(t)}/`}>{t}</a> ({c})</li>)}</ul>}
+<BaseLayout title="标签 - tingxueren.com" currentPath={Astro.url.pathname}>
+  {list.length === 0 ? (
+    <p>暂无标签</p>
+  ) : (
+    <ul class="tag-cloud">
+      {list.map(([t, c]) => (
+        <li class="pill">
+          <a href={`/tags/${encodeURIComponent(t)}/`}>{t}</a>
+          <span class="meta">{c}</span>
+        </li>
+      ))}
+    </ul>
+  )}
 </BaseLayout>
