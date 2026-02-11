@@ -28,6 +28,10 @@ jobs:
       TARGET_DIR: ${{ secrets.DEPLOY_TARGET_DIR }}
       BACKUP_BASE: ${{ secrets.DEPLOY_BACKUP_BASE }}
       KEEP_BACKUPS: ${{ vars.KEEP_BACKUPS || '10' }}
+      SYNC_ENABLED: ${{ vars.SYNC_ENABLED || 'false' }}
+      SYNC_TARGETS: ${{ vars.SYNC_TARGETS || '' }}
+      SYNC_TARGETS_FILE: ${{ vars.SYNC_TARGETS_FILE || 'scripts/sync-targets.conf' }}
+      SYNC_SSH_OPTS: ${{ vars.SYNC_SSH_OPTS || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,6 +49,15 @@ jobs:
 
       - name: Build + backup + deploy
         run: ./scripts/deploy.sh deploy
+
+      - name: Sync deploy artifacts to optional secondary nodes
+        if: ${{ env.SYNC_ENABLED == 'true' || env.SYNC_ENABLED == '1' }}
+        continue-on-error: true
+        run: ./scripts/sync-nodes.sh
+
+      - name: Sync skipped
+        if: ${{ !(env.SYNC_ENABLED == 'true' || env.SYNC_ENABLED == '1') }}
+        run: echo "SYNC_ENABLED=${SYNC_ENABLED}, skip secondary node sync"
 
   rollback:
     if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'rollback' }}
