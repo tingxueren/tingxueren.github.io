@@ -13,6 +13,10 @@ KEEP_BACKUPS="${KEEP_BACKUPS:-10}"
 TS="$(date +%Y%m%d_%H%M%S)"
 BACKUP_DIR="$BACKUP_BASE/$TS"
 STAMP_FILE="$WORKTREE_DIR/.last_deployed_commit"
+NOTIFY_ENABLED="${NOTIFY_ENABLED:-true}"
+NOTIFY_CHANNEL="${NOTIFY_CHANNEL:-telegram}"
+NOTIFY_TARGET="${NOTIFY_TARGET:-426648490}"
+SITE_URL="${SITE_URL:-https://nerd.tingxueren.com}"
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
@@ -24,6 +28,21 @@ require_cmd() {
 log() {
   printf '[%s] %s\n' "$(date '+%F %T')" "$*"
 }
+
+send_notify() {
+  [ "$NOTIFY_ENABLED" = "true" ] || return 0
+  command -v openclaw >/dev/null 2>&1 || return 0
+  local text="$1"
+  openclaw message send --channel "$NOTIFY_CHANNEL" --target "$NOTIFY_TARGET" --message "$text" >/dev/null 2>&1 || true
+}
+
+on_error() {
+  local code=$?
+  send_notify "[博客发布失败] artifact 同步失败（exit=$code）。请检查 nerd 上 systemd 日志：tingxueren-artifact-sync.service"
+  exit "$code"
+}
+
+trap on_error ERR
 
 ensure_worktree() {
   mkdir -p "$(dirname "$WORKTREE_DIR")"
@@ -82,6 +101,7 @@ deploy_artifacts() {
 
   echo "$head" > "$STAMP_FILE"
   log "Deploy done -> $TARGET_DIR (commit: $head)"
+  send_notify "[博客已更新] artifact commit: $head 已发布到 nerd。站点：$SITE_URL"
 }
 
 main() {
