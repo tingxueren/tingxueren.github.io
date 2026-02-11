@@ -1,4 +1,4 @@
-name: Build and Deploy Astro
+name: Build and Publish Astro Artifact
 
 on:
   push:
@@ -6,32 +6,15 @@ on:
       - astro-migration
       - main
   workflow_dispatch:
-    inputs:
-      action:
-        description: 'deploy or rollback'
-        required: true
-        default: deploy
-        type: choice
-        options:
-          - deploy
-          - rollback
-      backup_name:
-        description: 'Required when action=rollback (e.g. 20260211_171500)'
-        required: false
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
-    if: ${{ github.event_name == 'push' || github.event.inputs.action == 'deploy' }}
-    runs-on: self-hosted
+  build-and-publish:
+    runs-on: ubuntu-latest
     env:
       NODE_VERSION: '22'
-      TARGET_DIR: ${{ secrets.DEPLOY_TARGET_DIR }}
-      BACKUP_BASE: ${{ secrets.DEPLOY_BACKUP_BASE }}
-      KEEP_BACKUPS: ${{ vars.KEEP_BACKUPS || '10' }}
-      SYNC_ENABLED: ${{ vars.SYNC_ENABLED || 'false' }}
-      SYNC_TARGETS: ${{ vars.SYNC_TARGETS || '' }}
-      SYNC_TARGETS_FILE: ${{ vars.SYNC_TARGETS_FILE || 'scripts/sync-targets.conf' }}
-      SYNC_SSH_OPTS: ${{ vars.SYNC_SSH_OPTS || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,36 +25,25 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Validate deploy env
-        run: |
-          test -n "$TARGET_DIR" || (echo "DEPLOY_TARGET_DIR is required" && exit 1)
-          test -n "$BACKUP_BASE" || (echo "DEPLOY_BACKUP_BASE is required" && exit 1)
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build + backup + deploy
-        run: ./scripts/deploy.sh deploy
+      - name: Build site
+        run: npm run build
 
-      - name: Sync deploy artifacts to optional secondary nodes
-        if: ${{ env.SYNC_ENABLED == 'true' || env.SYNC_ENABLED == '1' }}
-        continue-on-error: true
-        run: ./scripts/sync-nodes.sh
+      - name: Upload build artifact (Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-dist
+          path: dist
+          retention-days: 14
 
-      - name: Sync skipped
-        if: ${{ !(env.SYNC_ENABLED == 'true' || env.SYNC_ENABLED == '1') }}
-        run: echo "SYNC_ENABLED=${SYNC_ENABLED}, skip secondary node sync"
-
-  rollback:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'rollback' }}
-    runs-on: self-hosted
-    env:
-      TARGET_DIR: ${{ secrets.DEPLOY_TARGET_DIR }}
-      BACKUP_BASE: ${{ secrets.DEPLOY_BACKUP_BASE }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Validate input
-        run: |
-          test -n "${{ github.event.inputs.backup_name }}" || (echo "backup_name is required for rollback" && exit 1)
-
-      - name: Rollback deploy target
-        run: ./scripts/rollback.sh "${{ github.event.inputs.backup_name }}"
+      - name: Publish dist to site-artifacts branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: site-artifacts
+          publish_dir: ./dist
+          force_orphan: true
+          enable_jekyll: false
+          commit_message: "chore: publish site artifact from ${{ github.ref_name }} @ ${{ github.sha }}"
