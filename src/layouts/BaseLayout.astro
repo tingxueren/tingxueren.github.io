@@ -31,7 +31,7 @@ const navItems = [
         --bg-page: #f9f6f1;
         --bg-paper: #fdfbf7;
         --bg-soft: #f3efe8;
-        --line: #e7e2d9;
+        --line: #e5dfd4;
         --line-strong: #d7d0c4;
         --text: #2b2b2b;
         --muted: #666666;
@@ -63,7 +63,7 @@ const navItems = [
       }
 
       .container {
-        max-width: 920px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 28px 18px 56px;
       }
@@ -74,6 +74,7 @@ const navItems = [
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
         background: var(--bg-paper);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
       }
 
       .site-header {
@@ -194,6 +195,12 @@ const navItems = [
         border: 1px solid var(--line);
         border-radius: var(--radius-md);
         background: #fffdfa;
+        transition: border-color .16s ease, background-color .16s ease;
+      }
+
+      .post-list li:hover {
+        border-color: var(--line-strong);
+        background: #fffcf8;
       }
 
       .post-list li a {
@@ -221,6 +228,12 @@ const navItems = [
         border-radius: 999px;
         border: 1px solid var(--line);
         background: var(--bg-soft);
+      }
+
+      .pager a:hover,
+      .pill:hover {
+        border-color: var(--line-strong);
+        background: #efe9df;
       }
 
       article { overflow-wrap: break-word; }
