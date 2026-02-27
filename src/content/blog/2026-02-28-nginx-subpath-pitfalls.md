@@ -282,6 +282,39 @@ curl -s "https://example.com/ops/api/token/stats" | jq .
 
 ### FastAPI
 
+**关键决策点**：
+
+| 场景 | 推荐方案 | 原因 |
+|------|----------|------|
+| **新项目/能改模板** | 相对路径 | 最简单，改路径时无需改代码 |
+| **已大量使用 `url_path_for()`** | `root_path` | 模板已依赖 `request.scope.root_path`，改相对路径成本高 |
+
+**示例对比**：
+
+```python
+# 方案 A：相对路径（推荐新项目使用）
+app = FastAPI(title="Ops Panel")  # 无 root_path
+
+# templates/base.html
+<a href="tokens">Token 监控</a>  <!-- 相对路径 -->
+<script>
+const API_BASE = '';  // 相对路径
+fetch(`${API_BASE}/api/token/stats`);
+</script>
+
+# 方案 B：root_path（适合已有项目）
+uvicorn app.main:app --root-path /ops  # 启动时注入
+
+# templates/base.html
+<link rel="icon" href="{{ request.scope.root_path }}/static/favicon.svg">
+<a href="{{ request.scope.root_path }}{{ request.app.url_path_for('index') }}">首页</a>
+<script>
+const API_BASE = '{{ request.scope.root_path }}';
+fetch(`${API_BASE}/api/token/stats`);
+</script>
+```
+
+**注意**：
 - `root_path` 只影响 `url_for()` 生成的 URL，不影响实际路由
 - 如果用相对路径，**不要设置** `root_path`
 - 如果需要用 `url_for()`，确保 Nginx 传递 `X-Forwarded-Prefix` 并配置 `root_path`
@@ -327,6 +360,28 @@ export default {
 | 1 | `root_path` + `url_for()` | ~2h | ❌ 404 |
 | 2 | Nginx 重定向 | ~30min | ⚠️ 能用但脏 |
 | 3 | 相对路径 | ~10min | ✅ 200 OK |
+
+### 为什么 Ops-Panel 还在用 `root_path`？
+
+你可能会问：「既然相对路径这么好，为什么 OpenClaw Ops-Panel 还在用 `--root-path /ops`？」
+
+**原因**：Ops-Panel 在踩这个坑**之前**就已经写好了，模板里大量使用了：
+
+```html
+<!-- Ops-Panel 现有模板 -->
+<link rel="icon" href="{{ request.scope.root_path }}/static/favicon.svg">
+<a href="{{ request.scope.root_path }}{{ request.app.url_path_for('index') }}">首页</a>
+<form action="{{ request.scope.root_path }}{{ request.app.url_path_for('restart_service') }}">
+```
+
+**改相对路径的成本**：
+- 需要修改所有模板文件（`base.html`, `service.html`, `tokens.html` 等）
+- 需要修改所有 JavaScript 中的 API 路径
+- 测试工作量大
+
+**决策**：对于**已有项目**，如果已经大量使用 `url_path_for()` 和 `request.scope.root_path`，**保留 `root_path` 是更经济的选择**。
+
+**新项目建议**：无脑用相对路径，避免这个复杂度！
 
 ### 最终配置
 
