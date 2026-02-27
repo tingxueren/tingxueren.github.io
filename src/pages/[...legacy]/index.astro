@@ -20,7 +20,7 @@ const { Content } = await render(post);
 >
   <article>
     <h1>{post.data.title}</h1>
-    <p class="meta">{post.data.date.toISOString().replace('T', ' ').slice(0, 16)}</p>
+    <p class="meta">{post.data.date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false }).replace(',', '')}</p>
     <Content />
     {post.data.tags.length > 0 && (
       <p class="meta">标签：{post.data.tags.join(' / ')}</p>
