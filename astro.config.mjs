@@ -20,5 +20,10 @@ export default defineConfig({
   integrations,
   markdown: {
     syntaxHighlight: 'prism'
+  },
+  vite: {
+    server: {
+      allowedHosts: ['nerd.tingxueren.com', 'tingxueren.com']
+    }
   }
 });
