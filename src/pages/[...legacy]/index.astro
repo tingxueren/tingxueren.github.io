@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const coverImg = post.data.coverImage;
 ---
 <BaseLayout
   title={`${post.data.title} - tingxueren.com`}
@@ -19,6 +20,7 @@ const { Content } = await render(post);
   currentPath={Astro.url.pathname}
 >
   <article>
+    {coverImg && <img src={coverImg} alt={post.data.title} style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.15);" />}
     <h1>{post.data.title}</h1>
     <p class="meta">{post.data.date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false }).replace(',', '')}</p>
     <Content />
