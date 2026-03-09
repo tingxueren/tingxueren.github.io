@@ -14,7 +14,7 @@ slug: openclaw-mem0-dashscope-qdrant
 legacyPath: 2026/03/09/openclaw-mem0-dashscope-qdrant
 comments: true
 draft: false
-coverImage: /assets/blog/openclaw-mem0-dashscope-qdrant/cover-google.png
+coverImage: /assets/blog/openclaw-mem0-dashscope-qdrant/cover-google-blue-2.png
 ---
 
 > 目标读者：
