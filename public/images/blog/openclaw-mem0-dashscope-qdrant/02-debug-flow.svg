@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1400" height="520" viewBox="0 0 1400 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mem0 + DashScope + Qdrant troubleshooting flow">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0b1b3a"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1400" height="520" fill="#fbfbf6"/>
+
+  <!-- title -->
+  <text x="60" y="64" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="26" font-weight="800" fill="#0b1b3a">Mem0（DashScope + Qdrant）排障流程</text>
+  <text x="60" y="92" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">从左到右：先看 401（baseURL/SDK），再看 Qdrant 版本兼容，最后看 409 幂等冲突。</text>
+
+  <!-- common box style: white with navy stroke -->
+  <!-- start -->
+  <rect x="60" y="130" width="330" height="90" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="90" y="168" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">症状</text>
+  <text x="90" y="194" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">mem0 recall / capture 失败</text>
+
+  <!-- arrow to step1 -->
+  <path d="M390 175 H430" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- step1: 401 -->
+  <rect x="450" y="130" width="300" height="90" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="476" y="164" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">Step 1：是否 401</text>
+  <text x="476" y="190" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">Incorrect API key</text>
+
+  <!-- fix1 -->
+  <rect x="450" y="240" width="300" height="150" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="476" y="274" font-family="ui-sans-serif, system-ui" font-size="16" font-weight="800" fill="#0b1b3a">Fix：OpenAI SDK baseURL</text>
+  <text x="476" y="300" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">Mem0 的 OpenAIEmbedder 必须传 baseURL</text>
+  <text x="476" y="323" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">并配置 embedder.config.url/baseURL=DashScope</text>
+  <text x="476" y="351" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="600" fill="#0b1b3a">OpenAI({ apiKey, baseURL: url || baseURL })</text>
+
+  <!-- arrow down to fix1 (if YES) -->
+  <path d="M600 220 V235" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="612" y="232" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="800" fill="#0b1b3a">YES</text>
+
+  <!-- arrow to step2 (if NO) -->
+  <path d="M750 175 H790" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="760" y="166" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="800" fill="#0b1b3a">NO</text>
+
+  <!-- step2: incompatible -->
+  <rect x="810" y="130" width="300" height="90" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="836" y="164" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">Step 2：Qdrant 兼容</text>
+  <text x="836" y="190" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">client/server incompatible</text>
+
+  <!-- fix2 -->
+  <rect x="810" y="240" width="300" height="150" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="836" y="274" font-family="ui-sans-serif, system-ui" font-size="16" font-weight="800" fill="#0b1b3a">Fix：升级 Qdrant 镜像</text>
+  <text x="836" y="300" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">保持 major 一致，minor 差异 ≤ 1</text>
+  <text x="836" y="326" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">本文示例：qdrant/qdrant:v1.13.0</text>
+  <text x="836" y="354" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="600" fill="#0b1b3a">curl http://127.0.0.1:6333/ | jq .version</text>
+
+  <path d="M960 220 V235" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="972" y="232" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="800" fill="#0b1b3a">YES</text>
+
+  <path d="M1110 175 H1150" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="1120" y="166" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="800" fill="#0b1b3a">NO</text>
+
+  <!-- step3: 409 -->
+  <rect x="1170" y="130" width="170" height="90" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="1192" y="162" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">Step 3：409</text>
+  <text x="1192" y="190" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">collection exists</text>
+
+  <!-- fix3 -->
+  <rect x="1170" y="240" width="170" height="150" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="1192" y="274" font-family="ui-sans-serif, system-ui" font-size="16" font-weight="800" fill="#0b1b3a">Fix</text>
+  <text x="1192" y="302" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">通常可忽略</text>
+  <text x="1192" y="326" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">若持续失败：</text>
+  <text x="1192" y="348" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">检查 dimension</text>
+  <text x="1192" y="370" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">或换 collection</text>
+
+  <path d="M1255 220 V235" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="1267" y="232" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="800" fill="#0b1b3a">YES</text>
+
+</svg>
