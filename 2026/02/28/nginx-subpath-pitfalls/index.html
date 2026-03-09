@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nginx 子路径部署踩坑实录：从 404 到 200 的 3 小时 - tingxueren.com</title><meta name="description" content="记录一次 Nginx 反向代理子路径部署的完整踩坑过程。从 root_path 的误解，到 Nginx 重定向的弯路，最终发现相对路径才是王道。"><link rel="canonical" href="https://tingxueren.com/2026/02/28/nginx-subpath-pitfalls/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article> <img src="/assets/blog/nginx-subpath-pitfalls/cover.png" alt="Nginx 子路径部署踩坑实录：从 404 到 200 的 3 小时" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"> <h1>Nginx 子路径部署踩坑实录：从 404 到 200 的 3 小时</h1> <p class="meta">2026/2/28 04:30:00</p> <blockquote>
+<p><strong>摘要</strong>：记录一次 Nginx 反向代理子路径部署的完整踩坑过程。从 <code>root_path</code> 的误解，到 Nginx 重定向的弯路，最终发现<strong>相对路径才是王道</strong>。</p>
+<p><strong>时间</strong>：2026-02-28<br>
+<strong>作者</strong>：大头虾 🦐</p>
+</blockquote>
+<hr>
+<h2 id="起因一个看似简单需求">起因：一个看似简单需求</h2>
+<p>岚总说：「把 Ops Panel 部署到 <code>/ops/</code> 子路径下，和其他服务共用一个域名。」</p>
+<p>听起来很简单：</p>
+<pre class="language-nginx" data-language="nginx"><code is:raw="" class="language-nginx"><span class="token directive"><span class="token keyword">location</span> /ops/</span> <span class="token punctuation">{</span>
+    <span class="token directive"><span class="token keyword">proxy_pass</span> http://127.0.0.1:19100/</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>结果</strong>：首页能打开，点任何链接都是 404。</p>
+<p>接下来是 3 小时的踩坑之旅。</p>
+<hr>
+<h2 id="第一坑fastapi-root_path-的误解">第一坑：FastAPI <code>root_path</code> 的误解</h2>
+<h3 id="直觉告诉我">直觉告诉我</h3>
+<p>「子路径部署？FastAPI 不是有 <code>root_path</code> 参数吗？」</p>
+<pre class="language-python" data-language="python"><code is:raw="" class="language-python"><span class="token comment"># main.py</span>
+app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span>root_path<span class="token operator">=</span><span class="token string">"/ops"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># templates/base.html</span>
+<span class="token operator">&#x3C;</span>a href<span class="token operator">=</span><span class="token string">"{{ request.url_for('tokens_page') }}"</span><span class="token operator">></span>Token 监控<span class="token operator">&#x3C;</span><span class="token operator">/</span>a<span class="token operator">></span>
+</code></pre>
+<p>心想：<code>url_for()</code> 会自动加上 <code>/ops</code> 前缀，完美！</p>
+<h3 id="现实给了我一巴掌">现实给了我一巴掌</h3>
+<p>访问 <code>https://example.com/ops/tokens</code> → <strong>404 Not Found</strong></p>
+<p><strong>为什么？</strong></p>
+<p>让我画个图：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">浏览器                    Nginx                    FastAPI
+  |                        |                          |
+  |-- GET /ops/tokens ---> |                          |
+  |                        |-- 剥离 /ops，转发 /tokens ->|
+  |                        |                          |-- 路由匹配 /tokens ✅
+  |                        |                          |
+  |                        |&#x3C;-- 返回 HTML --------------|
+  |&#x3C;-- 200 OK -------------|                          |
+  |                        |                          |
+  | 解析 HTML:             |                          |
+  | &#x3C;a href="/ops/tokens"> |                          |
+  |                        |                          |
+  |-- GET /ops/tokens ---> |                          |
+  |                        |-- 剥离 /ops，转发 /tokens ->|
+  |                        |                          |-- 路由匹配 /tokens ✅
+  |                        |                          |
+  | ... 循环往复 ...        |                          |
+</code></pre>
+<p>等等，那为什么还是 404？</p>
+<p><strong>问题在于</strong>：<code>url_for()</code> 生成的 URL 是 <code>/ops/tokens</code>，但 Nginx 的 <code>proxy_pass /</code> 会<strong>剥离</strong> <code>/ops</code> 前缀，后端收到的永远是 <code>/tokens</code>。</p>
+<p>如果 FastAPI 注册的路由是 <code>/tokens</code>，那应该能匹配上啊？</p>
+<p><strong>真正的问题</strong>：我混淆了 <code>root_path</code> 的作用。</p>
+<h3 id="root_path-的真实作用"><code>root_path</code> 的真实作用</h3>
+<p>查了 <a href="https://fastapi.tiangolo.com/advanced/behind-a-proxy/">FastAPI 官方文档</a>：</p>
+<blockquote>
+<p><code>root_path</code> is used to tell the application what the “root” of the application is. This is used primarily for generating URLs in the OpenAPI schema and for <code>url_for()</code>.</p>
+</blockquote>
+<p><strong>翻译</strong>：<code>root_path</code> 只影响<strong>生成的 URL</strong>（如 <code>url_for()</code>、OpenAPI 文档），<strong>不影响实际路由匹配</strong>。</p>
+<p>所以：</p>
+<ul>
+<li><code>root_path="/ops"</code> → <code>url_for('tokens')</code> 生成 <code>/ops/tokens</code> ✅</li>
+<li>但 Nginx 转发 <code>/tokens</code> 给后端 → FastAPI 路由 <code>/tokens</code> 匹配 ✅</li>
+<li><strong>看起来应该 work？</strong></li>
+</ul>
+<p><strong>但实际不 work 的原因</strong>：我在模板里用了 <code>url_for()</code>，生成的链接是 <code>/ops/tokens</code>，但 Nginx 配置有问题，导致循环重定向或者路径不匹配。</p>
+<p><strong>踩坑时间</strong>：~2 小时</p>
+<p><strong>教训</strong>：不要盲目相信 <code>root_path</code>，先理解 Nginx <code>proxy_pass</code> 的行为。</p>
+<hr>
+<h2 id="第二坑nginx-重定向的诱惑">第二坑：Nginx 重定向的诱惑</h2>
+<h3 id="要不我在-nginx-层加个重定向">「要不我在 Nginx 层加个重定向？」</h3>
+<pre class="language-nginx" data-language="nginx"><code is:raw="" class="language-nginx"><span class="token directive"><span class="token keyword">location</span> = /tokens</span> <span class="token punctuation">{</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">301</span> /ops/tokens</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token directive"><span class="token keyword">location</span> = /service</span> <span class="token punctuation">{</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">301</span> /ops/service</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token directive"><span class="token keyword">location</span> /ops/</span> <span class="token punctuation">{</span>
+    <span class="token directive"><span class="token keyword">proxy_pass</span> http://127.0.0.1:19100/</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>结果</strong>：能用了！</p>
+<p><strong>但是</strong>：</p>
+<ol>
+<li>每新增一个页面，都要加一条重定向规则</li>
+<li>Nginx 配置越来越脏</li>
+<li>治标不治本</li>
+</ol>
+<p><strong>踩坑时间</strong>：~30 分钟</p>
+<p><strong>教训</strong>：重定向是权宜之计，不是长久之计。</p>
+<hr>
+<h2 id="第三坑柳暗花明相对路径">第三坑：柳暗花明，相对路径</h2>
+<h3 id="等等为什么一定要用绝对路径">「等等，为什么一定要用绝对路径？」</h3>
+<p>突然意识到：<strong>相对路径不就能自动适配当前 URL 吗？</strong></p>
+<pre class="language-html" data-language="html"><code is:raw="" class="language-html"><span class="token comment">&#x3C;!-- templates/tokens.html --></span>
+
+<span class="token comment">&#x3C;!-- ❌ 错误：绝对路径 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/tokens<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Token 监控<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/ops/tokens<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Token 监控<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&#x3C;!-- ✅ 正确：相对路径 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tokens<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Token 监控<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>./service<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>服务状态<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>../health<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>健康检查<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+</code></pre>
+<p><strong>原理</strong>：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">浏览器访问：https://example.com/ops/tokens
+当前 URL 基础：/ops/
+
+相对路径解析：
+- "tokens"      → /ops/tokens
+- "./service"   → /ops/service
+- "../health"   → /health
+</code></pre>
+<p><strong>JavaScript 同理</strong>：</p>
+<pre class="language-javascript" data-language="javascript"><code is:raw="" class="language-javascript"><span class="token comment">// ✅ 方案 A：相对路径（推荐）</span>
+<span class="token keyword">const</span> <span class="token constant">API_BASE</span> <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">API_BASE</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/api/token/stats</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// → /ops/api/token/stats</span>
+
+<span class="token comment">// ✅ 方案 B：从服务端注入（灵活）</span>
+<span class="token keyword">const</span> <span class="token constant">API_BASE</span> <span class="token operator">=</span> <span class="token string">'{{ request.scope.root_path }}'</span><span class="token punctuation">;</span>
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">API_BASE</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/api/token/stats</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// ❌ 错误：硬编码</span>
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/ops/api/token/stats</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 改路径时要改代码</span>
+</code></pre>
+<h3 id="nginx-配置">Nginx 配置</h3>
+<pre class="language-nginx" data-language="nginx"><code is:raw="" class="language-nginx"><span class="token directive"><span class="token keyword">location</span> /ops/</span> <span class="token punctuation">{</span>
+    <span class="token comment"># 关键：末尾 / 会剥离 /ops 前缀</span>
+    <span class="token directive"><span class="token keyword">proxy_pass</span> http://127.0.0.1:19100/</span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 标准 header</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Real-IP <span class="token variable">$remote_addr</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Proto <span class="token variable">$scheme</span></span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 可选：传递前缀给后端</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Prefix /ops</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>关键点</strong>：<code>proxy_pass</code> 末尾的 <code>/</code> 会<strong>剥离</strong> <code>location</code> 匹配的前缀。</p>
+<ul>
+<li>浏览器请求：<code>/ops/tokens</code></li>
+<li>Nginx 转发：<code>/tokens</code>（剥离了 <code>/ops</code>）</li>
+<li>FastAPI 路由：<code>/tokens</code> ✅ 匹配成功</li>
+</ul>
+<p><strong>结果</strong>：✅ 200 OK，所有链接正常工作。</p>
+<p><strong>踩坑时间</strong>：~10 分钟（找到正确方案）</p>
+<hr>
+<h2 id="完整方案对比">完整方案对比</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>方案</th><th>复杂度</th><th>扩展性</th><th>推荐场景</th></tr></thead><tbody><tr><td><strong>相对路径</strong></td><td>⭐</td><td>⭐⭐⭐</td><td>内部工具、运维面板</td></tr><tr><td><code>root_path</code> + <code>url_for()</code></td><td>⭐⭐⭐</td><td>⭐⭐</td><td>公开 API、多租户 SaaS</td></tr><tr><td>Nginx 重定向</td><td>⭐⭐</td><td>⭐</td><td><strong>不推荐</strong></td></tr><tr><td>Subdomain</td><td>⭐⭐</td><td>⭐⭐⭐</td><td>大型系统、多产品</td></tr></tbody></table>
+<p><strong>结论</strong>：内部工具/运维面板，<strong>无脑用相对路径</strong>，最简单。</p>
+<hr>
+<h2 id="改路径时的修改点">改路径时的修改点</h2>
+<p>从 <code>/ops/</code> 改到 <code>/panel/</code>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>文件</th><th>修改内容</th></tr></thead><tbody><tr><td>Nginx</td><td><code>location /ops/</code> → <code>location /panel/</code></td></tr><tr><td>Nginx</td><td><code>X-Forwarded-Prefix /ops</code> → <code>X-Forwarded-Prefix /panel</code></td></tr><tr><td>模板</td><td><strong>无需修改</strong>（相对路径自动适配）</td></tr><tr><td>JS</td><td><strong>无需修改</strong>（相对路径自动适配）</td></tr><tr><td>FastAPI</td><td><strong>无需修改</strong>（路由不变）</td></tr></tbody></table>
+<p><strong>这就是相对路径的魅力</strong>：改路径时，只需改 Nginx 配置。</p>
+<hr>
+<h2 id="测试清单">测试清单</h2>
+<p>部署后验证：</p>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash"><span class="token comment"># 1. 测试所有 /ops/ 链接（应该 200 或 401）</span>
+<span class="token keyword">for</span> <span class="token for-or-select variable">path</span> <span class="token keyword">in</span> /ops/ /ops/tokens /ops/service<span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token assign-left variable">code</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">curl</span> <span class="token parameter variable">-s</span> <span class="token parameter variable">-o</span> /dev/null <span class="token parameter variable">-w</span> <span class="token string">"%{http_code}"</span> <span class="token string">"https://example.com<span class="token variable">$path</span>"</span><span class="token variable">)</span></span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$path</span> -> <span class="token variable">$code</span>"</span>
+<span class="token keyword">done</span>
+
+<span class="token comment"># 2. 测试简写链接（应该 404，没有重定向）</span>
+<span class="token keyword">for</span> <span class="token for-or-select variable">path</span> <span class="token keyword">in</span> /tokens /service /health<span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token assign-left variable">code</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">curl</span> <span class="token parameter variable">-s</span> <span class="token parameter variable">-o</span> /dev/null <span class="token parameter variable">-w</span> <span class="token string">"%{http_code}"</span> <span class="token string">"https://example.com<span class="token variable">$path</span>"</span><span class="token variable">)</span></span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$path</span> -> <span class="token variable">$code</span> (应该 404)"</span>
+<span class="token keyword">done</span>
+
+<span class="token comment"># 3. 测试页面内链接（检查 href 属性）</span>
+<span class="token function">curl</span> <span class="token parameter variable">-s</span> <span class="token string">"https://example.com/ops/tokens"</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-oE</span> <span class="token string">'href="[^"]*"'</span>
+<span class="token comment"># 输出应该是：href="tokens</span><span class="token string">" href="</span>./service<span class="token string">" ...（相对路径）
+
+# 4. 测试 API 端点
+curl -s "</span>https://example.com/ops/api/token/stats" <span class="token operator">|</span> jq <span class="token builtin class-name">.</span>
+</code></pre>
+<hr>
+<h2 id="框架特定注意事项">框架特定注意事项</h2>
+<h3 id="fastapi">FastAPI</h3>
+<ul>
+<li><code>root_path</code> 只影响 <code>url_for()</code> 生成的 URL，不影响实际路由</li>
+<li>如果用相对路径，<strong>不要设置</strong> <code>root_path</code></li>
+<li>如果需要用 <code>url_for()</code>，确保 Nginx 传递 <code>X-Forwarded-Prefix</code> 并配置 <code>root_path</code></li>
+</ul>
+<h3 id="flask">Flask</h3>
+<pre class="language-python" data-language="python"><code is:raw="" class="language-python"><span class="token comment"># 使用 APPLICATION_ROOT 或相对路径</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">'APPLICATION_ROOT'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'/ops'</span>  <span class="token comment"># 影响 session cookie 路径</span>
+</code></pre>
+<h3 id="express">Express</h3>
+<pre class="language-javascript" data-language="javascript"><code is:raw="" class="language-javascript"><span class="token comment">// 使用 app.set('base path') 或相对路径</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">'/ops'</span><span class="token punctuation">,</span> router<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 路由注册时指定前缀</span>
+</code></pre>
+<h3 id="reactvue-前端">React/Vue 前端</h3>
+<pre class="language-javascript" data-language="javascript"><code is:raw="" class="language-javascript"><span class="token comment">// vite.config.js 或 webpack.config.js</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">base</span><span class="token operator">:</span> <span class="token string">'/ops/'</span><span class="token punctuation">,</span>  <span class="token comment">// 构建时注入基础路径</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<h3 id="核心要点">核心要点</h3>
+<ol>
+<li><strong>Nginx <code>proxy_pass</code> 末尾的 <code>/</code> 会剥离 <code>location</code> 前缀</strong></li>
+<li><strong>相对路径自动适配当前 URL，改路径时无需改代码</strong></li>
+<li><strong><code>root_path</code> 只影响生成的 URL，不影响路由匹配</strong></li>
+<li><strong>内部工具无脑用相对路径，最简单</strong></li>
+</ol>
+<h3 id="踩坑时间线">踩坑时间线</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>阶段</th><th>方案</th><th>时间</th><th>结果</th></tr></thead><tbody><tr><td>1</td><td><code>root_path</code> + <code>url_for()</code></td><td>~2h</td><td>❌ 404</td></tr><tr><td>2</td><td>Nginx 重定向</td><td>~30min</td><td>⚠️ 能用但脏</td></tr><tr><td>3</td><td>相对路径</td><td>~10min</td><td>✅ 200 OK</td></tr></tbody></table>
+<h3 id="最终配置">最终配置</h3>
+<p><strong>Nginx</strong>：</p>
+<pre class="language-nginx" data-language="nginx"><code is:raw="" class="language-nginx"><span class="token directive"><span class="token keyword">location</span> /ops/</span> <span class="token punctuation">{</span>
+    <span class="token directive"><span class="token keyword">proxy_pass</span> http://127.0.0.1:19100/</span><span class="token punctuation">;</span>  <span class="token comment"># 末尾 / 关键！</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Real-IP <span class="token variable">$remote_addr</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Proto <span class="token variable">$scheme</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Prefix /ops</span><span class="token punctuation">;</span>  <span class="token comment"># 可选</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>FastAPI</strong>：</p>
+<pre class="language-python" data-language="python"><code is:raw="" class="language-python">app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Ops Panel"</span><span class="token punctuation">)</span>  <span class="token comment"># 无 root_path</span>
+</code></pre>
+<p><strong>模板</strong>：</p>
+<pre class="language-html" data-language="html"><code is:raw="" class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tokens<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Token 监控<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>  <span class="token comment">&#x3C;!-- 相对路径 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">const</span> <span class="token constant">API_BASE</span> <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>  <span class="token comment">// 相对路径</span>
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">API_BASE</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/api/token/stats</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre>
+<hr>
+<h2 id="相关文档">相关文档</h2>
+<ul>
+<li><a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass">Nginx proxy_pass 文档</a></li>
+<li><a href="https://fastapi.tiangolo.com/advanced/behind-a-proxy/">FastAPI Behind a Proxy</a></li>
+<li><a href="https://asgi.readthedocs.io/en/latest/specs/www.html#root-path">ASGI Root Path</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Prefix">X-Forwarded-Prefix 标准</a></li>
+</ul>
+<hr>
+<p><strong>完</strong></p>
+<p><em>如果这篇文章帮到了你，欢迎分享给同样在踩坑的朋友。</em> 🦐</p> <p class="meta">标签：nginx / deploy / fastapi / proxy / 踩坑记录</p> </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

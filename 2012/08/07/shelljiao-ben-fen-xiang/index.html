@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>shell脚本分享 - tingxueren.com</title><meta name="description" content="shell脚本分享"><link rel="canonical" href="https://tingxueren.com/2012/08/07/shelljiao-ben-fen-xiang/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article>  <h1>shell脚本分享</h1> <p class="meta">2012/8/8 05:26:00</p> <p>用着 linux 免不了要和 shell 打交道，shell 是个很强大的工具，内置了多有用的程序，配合着 linux 的管道机制，可以将这些小工具组合成各种各样的脚本，为你服务。下面简单的介绍并分享我的几个小脚本。</p>
+<h2 id="脚本的结构">脚本的结构</h2>
+<ul>
+<li>
+<p>脚本的第一行一般是 <code>#!/bin/bash</code> 或者是 <code>#!/bin/sh</code>, 表明执行脚本的程序为
+<code>bash</code> 或者是 <code>sh</code> 。</p>
+</li>
+<li>
+<p>以 <code>#</code> 开头的为注释，执行时会自动忽略。</p>
+</li>
+<li>
+<p>脚本在执行时可以从外界获取参数，一般执行脚本的格式为 <code>test.sh arg[1] arg[2] ... </code> , 在脚本内部 <code>$0</code> 代表脚本的名称， <code>$1</code> 代表第一个参数，以此类推。</p>
+</li>
+<li>
+<p>脚本中常用的命令</p>
+<ul>
+<li>
+<p>find 和 exec</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"># 一般用 find 命令找到符合要求的项目，然后调用 command 处理每一项
+find path [-type] [f]  [-name] ["*.txt"]  -exec command argument '{}' \;
+</code></pre>
+</li>
+<li>
+<p>sed awk cut</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"># 这三个一般都是用来对获取的文本进行处理
+# 获取文件扩展名, 即如果输入为test.txt, 输出为txt
+sed 's/^.*\.//g'
+# 输出 ps aux 的输出项的前两列
+ps aux | awk '{print $1, $2}' 
+# cut 即剪切工具，下面是取出以空格为分隔符，取出第一部分的命令
+cut -d ' '  -f 1   
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="我的小脚本">我的小脚本</h2>
+<ul>
+<li>
+<p><a href="/codes/iconv_shell.sh">文本格式转换脚本</a></p>
+<p>用 linux 有一个很头疼的问题就就是中文的乱码问题，linux 下中文的编码格式是
+utf-8, windows 默认编码格式是 GB2312， 这导致了 windows 下的文本文件在
+linux 下常常是乱码的，同理 linux 下编辑的文本文件在 windows 下也会乱码。
+为此我们要进行字符编码的转换，即利用 <code>iconv</code> 命令。<code>iconv</code> 命令的基本格式
+如下：
+iconv -f oldcharset -t newcharset  file -o newfile
+脚本实现了自动获取字符编码，并转换为 UTF-8 编码的功能，为了解决常常遇到的
+未知编码问题，加入了个默认功能，如果编码未知，强制性的进行 GB18030 到
+UTF-8 的功能，运行起来效果还好。根据这个又修改成了一个右键调用的
+<a href="/codes/UTF8.sh">nautilus-script</a>。</p>
+</li>
+<li>
+<p><a href="/codes/chmod_recursion.sh">批量更改文件权限脚本</a></p>
+<p>在拷贝文件时常常遇到拷贝回来的文件的权限不对，一个个更改很麻烦，
+脚本主要用<code>find</code>命令查找对应的项目，然后通过 <code>exec</code> 调用 <code>chmod</code>
+而成，具体请看脚本。</p>
+</li>
+<li>
+<p><a href="/codes/chown_recursion.sh">批量更改文件所有者脚本</a></p>
+<p>和上面的脚本很相似，也是用 <code>find</code>, <code>exec</code>, <code>chown</code>,组合而成，
+<code>chown</code>可以同时更改文件的所有者和所属组。</p>
+</li>
+<li>
+<p><a href="/codes/mod-file-extension.sh">更改文件后缀名</a></p>
+<p>有时候文件的后缀名不符合要求，如要把 <code>htm</code> 后缀换成 <code>html</code> 后缀，这个脚本
+就很有用。主要用到了一个命令 <code>rename</code>。</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">  # 将说用的 *.htm 后缀换成 html
+  renam 's/htm$/html' *.htm
+</code></pre>
+</li>
+</ul>  </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

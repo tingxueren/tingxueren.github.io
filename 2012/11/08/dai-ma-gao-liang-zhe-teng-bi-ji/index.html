@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>代码高亮折腾笔记 - tingxueren.com</title><meta name="description" content="代码高亮折腾笔记"><link rel="canonical" href="https://tingxueren.com/2012/11/08/dai-ma-gao-liang-zhe-teng-bi-ji/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article>  <h1>代码高亮折腾笔记</h1> <p class="meta">2012/11/9 01:19:00</p> <p>这几天 wordpress 也搭建好了，就开始折腾了，别的配置都是比较简单的，基本上就是换主题，改插件的事情。不懂php也就没有大的改动，就是找了个能看的过去的主题用了个 cache 的插件优化了下，为了听音乐还在侧边栏贴上了个虾米播播，虾米的服务挺好的，赞一个。作为个程学猿还是想在 blog 上分享点代码的，代码显示的不好，连写字的心情都没有。折腾代码的高亮和漂亮的显示是最头疼的事情，还好最后找到了个基本完美的方案，在折腾 wordpress 的同时也研究了下 octopress 的代码高亮，写个日志以为记。</p>
+<h2 id="wordpress-代码高亮方案">wordpress 代码高亮方案</h2>
+<p>总体上 wordpress 方案就是找插件，但是找到个可以用的，用着顺手的插件真的好麻烦,经过了很多的测试终于选定了现在用的插件。下面是各个插件的试用感受。</p>
+<ul>
+<li>
+<p><a href="http://www.boke8.net/wordpress-wp-syntax-button.html">WP-Syntax</a></p>
+<p>这个插件是我用的第一个插件，还有个 <code>WP-Syntax Button</code> 配套的按钮，用起来还是凑合。但是用了一段后发现严重的问题，在编辑的时候如果来回的在可视化视图和 html 视图之间切换的话会造成代码不能正常的高亮，排版被破坏，而且不支持 tab 缩进，这点是我最不能忍受的。我所有的代码都是 tab 缩进的贴在网页上却把所有的 tab 都删除了，代码看起来就一团糟了。</p>
+</li>
+<li>
+<p><a href="http://codeup.org/archives/128">SyntaxHighlighter</a></p>
+<p>因为 WP-Syntax 的不靠谱我又换了这个插件，这个插件比 WP-Syntax 好用的多了，一切都在可视化视图中修改就好，语法也很简单：[lang]code[/lang],这样做就好了而且切换可视化视图和 html 视图的话代码也不会乱掉。但是不支持 tab 缩进的问题依然没有解决。</p>
+</li>
+<li>
+<p><a href="http://www.guansoft.com/syntaxhighlighter.html">SyntaxHighlighter++</a></p>
+<p>这个插件完美的解决了我的问题不得不赞个，安装后会在编辑页面出现个新的编辑窗口，把代码贴上去，然后点击插入就好了。支持 tab 缩进，不需要改动 html 代码用着很舒服，还是国人写的，更要支持下，以后不出意外的话这个插件会一直用下去。</p>
+</li>
+</ul>
+<h2 id="octopress-代码高亮方案">octopress 代码高亮方案</h2>
+<p>以前用 octopress 写东西的时候没注意代码高亮的问题，原来插入代码为了美观只是在 markdown 文本里面把代码行缩进8个空格，排整齐，效果还凑合，但是这样不会有高亮的效果的，而且手动的打空格是很憋屈的事情。查找了下官方的教程终于找到了适合的方案。</p>
+<p>官方的<a href="http://octopress.org/docs/blogging/code/"> octopress 代码高亮教程</a>,同时还有篇<a href="http://xiongbupt.github.com/blog/2012/06/08/octopressdai-ma-gao-liang/">非官方中文翻译</a>。</p>
+<p>看了这两篇文章后我就准备尝试，但是还是不知道markdown源文件到底该怎么写，幸好 octopress 的<a href="https://github.com/imathis/octopress">官网</a>就托管在 github 上，上面有生成的页面，也有 markdown 源代码,这下可以对照着看了。</p>
+<p>我很喜欢<code>backtick-codeblock</code>的代码高亮方式，很简单，在代码前后加上三个反引号就好了，在 github 上找到了<a href="https://github.com/imathis/octopress/blob/site/source/docs/plugins/backtick-codeblock/index.markdown"> markdown 文件</a>。下面是简单的摘录。</p>
+<ul>
+<li>
+<p>语法</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> ``` [language] [title] [url] [link text] [linenos:false] [start:#] [mark:#,#-#]
+ code snippet
+ ```
+</code></pre>
+</li>
+<li>
+<p>Basic options</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> [language] - Used by the syntax highlighter. Passing 'plain' disables highlighting.
+ [title] - Add a figcaption to your code block.
+ [url] - Download or reference link for your code.
+ [Link text] - Text for the link, defaults to 'link'.
+</code></pre>
+</li>
+<li>
+<p>源码</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> ``` ruby Discover if a number is prime http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/ Source Article
+ class Fixnum
+   def prime?
+     ('1' * self) !~ /^1?$|^(11+?)\1+$/
+   end
+  end
+ ```
+</code></pre>
+</li>
+<li>
+<p>显示效果</p>
+</li>
+</ul>
+<pre class="language-ruby" data-language="ruby"><code is:raw="" class="language-ruby">    <span class="token keyword">class</span> <span class="token class-name">Fixnum</span>
+      <span class="token keyword">def</span> <span class="token method-definition"><span class="token function">prime</span></span><span class="token operator">?</span>
+        <span class="token punctuation">(</span><span class="token string-literal"><span class="token string">'1'</span></span> <span class="token operator">*</span> <span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token operator">!~</span> <span class="token regex-literal"><span class="token regex">/^1?$|^(11+?)\1+$/</span></span>
+      <span class="token keyword">end</span>
+    <span class="token keyword">end</span>
+</code></pre>
+<h3 id="注意事项">注意事项</h3>
+<p>指定高亮的代码的语言时要写清楚，shell 脚本的语言类型是 <code>sh</code>，即使是 <code>Bash</code> 的脚本也应该用 <code>sh</code>，写作 <code>bash</code> 在  <code>rake generate</code> 的阶段会报错的。</p>
+<h3 id="高亮代码展示">高亮代码展示</h3>
+<pre class="language-sh" data-language="sh"><code is:raw="" class="language-sh"><span class="token comment"># 升级源，并更新系统</span>
+$ sduo <span class="token function">apt-get</span> update <span class="token operator">&#x26;&#x26;</span> <span class="token function">sudo</span> <span class="token function">apt-get</span> upgrade
+<span class="token comment"># 得到系统的内核信息</span>
+$ <span class="token function">uname</span> <span class="token parameter variable">-a</span>
+</code></pre>
+<pre class="language-c" data-language="c"><code is:raw="" class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&#x3C;iostream></span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&#x3C;algorithm></span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&#x3C;string></span>  </span>
+using namespace std<span class="token punctuation">;</span>  
+  
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+   string str1<span class="token punctuation">;</span>  
+   string str2<span class="token punctuation">;</span>  
+   <span class="token keyword">while</span><span class="token punctuation">(</span>cin<span class="token operator">>></span>str1<span class="token operator">>></span>str2<span class="token punctuation">)</span>  
+   <span class="token punctuation">{</span>  
+       <span class="token keyword">int</span> nLen1<span class="token punctuation">,</span> nLen2<span class="token punctuation">,</span> nLen<span class="token punctuation">;</span>  
+       nLen1 <span class="token operator">=</span> str1<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       nLen2 <span class="token operator">=</span> str2<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       nLen <span class="token operator">=</span> nLen1 <span class="token operator">></span> nLen2 <span class="token operator">?</span> nLen1 <span class="token operator">:</span> nLen2<span class="token punctuation">;</span>  
+         
+       <span class="token function">reverse</span><span class="token punctuation">(</span>str1<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> str1<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       <span class="token function">reverse</span><span class="token punctuation">(</span>str2<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> str2<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         
+       <span class="token comment">//高位补零  </span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>nLen <span class="token operator">></span> nLen1<span class="token punctuation">)</span> str1<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>nLen <span class="token operator">-</span> nLen1<span class="token punctuation">,</span> <span class="token char">'0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+       <span class="token keyword">if</span> <span class="token punctuation">(</span>nLen <span class="token operator">></span> nLen2<span class="token punctuation">)</span> str2<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>nLen <span class="token operator">-</span> nLen2<span class="token punctuation">,</span> <span class="token char">'0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         
+       <span class="token keyword">int</span> temp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>   <span class="token comment">//进位数目  </span>
+       <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+       string strResult<span class="token punctuation">;</span>    <span class="token comment">//存储结果  </span>
+         
+       <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&#x3C;</span> nLen<span class="token punctuation">)</span>  
+       <span class="token punctuation">{</span>  
+           <span class="token keyword">if</span><span class="token punctuation">(</span>str1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span><span class="token number">0x30</span> <span class="token operator">+</span> str2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> temp <span class="token operator">></span> <span class="token char">'9'</span><span class="token punctuation">)</span>  
+           <span class="token punctuation">{</span>  
+               strResult<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> str1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> str2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token char">'9'</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">+</span> temp<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+               temp <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
+           <span class="token punctuation">}</span>  
+           <span class="token keyword">else</span>  
+           <span class="token punctuation">{</span>  
+               strResult<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> str1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> str2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token char">'0'</span> <span class="token operator">+</span> temp<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+               temp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+           <span class="token punctuation">}</span>  
+           i<span class="token operator">++</span><span class="token punctuation">;</span>  
+       <span class="token punctuation">}</span>  
+         
+       <span class="token keyword">if</span><span class="token punctuation">(</span>temp <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>  
+          strResult<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token char">'1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       <span class="token function">reverse</span><span class="token punctuation">(</span>strResult<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> strResult<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       cout<span class="token operator">&#x3C;&#x3C;</span>strResult<span class="token operator">&#x3C;&#x3C;</span>endl<span class="token punctuation">;</span>  
+   <span class="token punctuation">}</span>  
+   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+</code></pre>  </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

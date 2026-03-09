@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>在 OpenClaw 上自托管 Mem0（DashScope Embeddings + 本地 Qdrant）踩坑与完整配置 - tingxueren.com</title><meta name="description" content="记录一次在 OpenClaw 上启用 Mem0(open-source) 插件，使用 DashScope(Qwen) 作为 embeddings/LLM 提供商，并用本地 Qdrant 做持久化向量库的完整落地过程、踩坑与验证方法。"><link rel="canonical" href="https://tingxueren.com/2026/03/09/openclaw-mem0-dashscope-qdrant/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article> <img src="/assets/blog/openclaw-mem0-dashscope-qdrant/cover-google-blue-2.png" alt="在 OpenClaw 上自托管 Mem0（DashScope Embeddings + 本地 Qdrant）踩坑与完整配置" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"> <h1>在 OpenClaw 上自托管 Mem0（DashScope Embeddings + 本地 Qdrant）踩坑与完整配置</h1> <p class="meta">2026/3/9 15:30:00</p> <blockquote>
+<p>目标读者：</p>
+<ul>
+<li>已经在跑 OpenClaw（gateway 正常）</li>
+<li>不想上 QMD（太吃资源）</li>
+<li>想要“长期记忆 + 自动召回/自动写入”，并且<strong>向量库存本机</strong>（可控、可持久化）</li>
+<li>embeddings/LLM 走 <strong>DashScope（Qwen/OpenAI-compatible）</strong>，不依赖 OpenAI API Key</li>
+</ul>
+</blockquote>
+<p>本文把整套过程拆成：<strong>架构 → 安装 → 配置 → Qdrant 部署 →（关键）DashScope 兼容处理 → 验证 → 常见问题</strong>。</p>
+<hr>
+<h2 id="0-先说结论架构图">0. 先说结论（架构图）</h2>
+<p>我们最终要的是下面这条链路：</p>
+<p><img src="/images/blog/openclaw-mem0-dashscope-qdrant/01-architecture.svg" alt="OpenClaw + Mem0（DashScope + Qdrant）架构图" style="width:100%;max-width:1100px;margin:1rem auto;display:block"></p>
+<ol>
+<li><strong>Auto-capture（自动写入）</strong></li>
+</ol>
+<ul>
+<li>OpenClaw 每轮对话结束 → Mem0 用 LLM 抽取“值得记住的事实” → 调 embeddings 得到向量 → 写入本机 Qdrant</li>
+</ul>
+<ol start="2">
+<li><strong>Auto-recall（自动召回）</strong></li>
+</ol>
+<ul>
+<li>下一次用户提问 → 先调 embeddings 把问题向量化 → 去本机 Qdrant 相似度检索 topK → 把命中记忆注入上下文 → 再让主模型回答</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li><strong>向量库</strong>（vectors + payload）在本机：Qdrant</li>
+<li><strong>embeddings / LLM</strong> 走远程：DashScope（OpenAI-compatible endpoint）</li>
+</ul>
+<hr>
+<h2 id="1-前置条件与约束">1) 前置条件与约束</h2>
+<ul>
+<li>OS：Debian 12（VPS）</li>
+<li>OpenClaw 已安装并能运行</li>
+<li>你已经有 DashScope API Key（保存在 OpenClaw 的 <code>env.vars.DASHSCOPE_API_KEY</code>）</li>
+<li>你接受“对话片段/抽取内容会外发到 DashScope”（但<strong>向量落在本机 Qdrant</strong>）</li>
+</ul>
+<blockquote>
+<p>如果你想 embeddings 也完全本地化，可考虑 Ollama embedding 模型；但在小 VPS 上要评估资源。</p>
+</blockquote>
+<hr>
+<h2 id="2-安装-mem0-插件">2) 安装 Mem0 插件</h2>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash">openclaw plugins <span class="token function">install</span> @mem0/openclaw-mem0
+</code></pre>
+<p>安装完成后，它会提示你重启 gateway 以加载插件。</p>
+<hr>
+<h2 id="3-配置-openclawjsonmem0-open-source--dashscope--qdrant">3) 配置 openclaw.json（Mem0 open-source + DashScope + Qdrant）</h2>
+<h3 id="31-插件入口">3.1 插件入口</h3>
+<p>在 <code>~/.openclaw/openclaw.json</code>：</p>
+<pre class="language-json5" data-language="json5"><code is:raw="" class="language-json5"><span class="token comment">// plugins.entries</span>
+<span class="token property">"openclaw-mem0"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"enabled"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"config"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"mode"</span><span class="token operator">:</span> <span class="token string">"open-source"</span><span class="token punctuation">,</span>
+    <span class="token property">"userId"</span><span class="token operator">:</span> <span class="token string">"default"</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 自动召回/自动写入（建议先分阶段开启，后面会给验证步骤）</span>
+    <span class="token property">"autoRecall"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"autoCapture"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+
+    <span class="token comment">// 召回条数与阈值</span>
+    <span class="token property">"topK"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token property">"searchThreshold"</span><span class="token operator">:</span> <span class="token number">0.3</span><span class="token punctuation">,</span>
+
+    <span class="token property">"oss"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"embedder"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"provider"</span><span class="token operator">:</span> <span class="token string">"openai"</span><span class="token punctuation">,</span>
+        <span class="token property">"config"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"apiKey"</span><span class="token operator">:</span> <span class="token string">"${DASHSCOPE_API_KEY}"</span><span class="token punctuation">,</span>
+          <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://dashscope.aliyuncs.com/compatible-mode/v1"</span><span class="token punctuation">,</span>
+          <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://dashscope.aliyuncs.com/compatible-mode/v1"</span><span class="token punctuation">,</span>
+          <span class="token property">"model"</span><span class="token operator">:</span> <span class="token string">"text-embedding-v3"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token property">"llm"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"provider"</span><span class="token operator">:</span> <span class="token string">"openai"</span><span class="token punctuation">,</span>
+        <span class="token property">"config"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"apiKey"</span><span class="token operator">:</span> <span class="token string">"${DASHSCOPE_API_KEY}"</span><span class="token punctuation">,</span>
+          <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://dashscope.aliyuncs.com/compatible-mode/v1"</span><span class="token punctuation">,</span>
+          <span class="token property">"model"</span><span class="token operator">:</span> <span class="token string">"qwen3-max"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token property">"vectorStore"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"provider"</span><span class="token operator">:</span> <span class="token string">"qdrant"</span><span class="token punctuation">,</span>
+        <span class="token property">"config"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"host"</span><span class="token operator">:</span> <span class="token string">"127.0.0.1"</span><span class="token punctuation">,</span>
+          <span class="token property">"port"</span><span class="token operator">:</span> <span class="token number">6333</span><span class="token punctuation">,</span>
+          <span class="token property">"collectionName"</span><span class="token operator">:</span> <span class="token string">"openclaw-mem0"</span><span class="token punctuation">,</span>
+          <span class="token property">"dimension"</span><span class="token operator">:</span> <span class="token number">1024</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>说明：</p>
+<ul>
+<li><code>embedder.provider="openai"</code> 是“走 OpenAI SDK 的 openai-compatible 用法”</li>
+<li>DashScope embedding 模型建议用 <code>text-embedding-v3</code>（我们实测 OK）</li>
+<li>Qdrant dimension 需要与 embedding 维度匹配。上面写 1024 是基于当时 <code>text-embedding-v3</code> 的返回（如果未来模型维度变化，需要同步调整）</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="4-启动本机-qdrantdocker">4) 启动本机 Qdrant（Docker）</h2>
+<p>我们按 VPS 的约定目录部署：<code>/home/mars/vps-infra/docker/</code>。</p>
+<h3 id="41-目录结构">4.1 目录结构</h3>
+<p>建议新建：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">/home/mars/vps-infra/docker/qdrant-docker/
+  ├── docker-compose.yml
+  └── data/               # 自动生成/持久化数据
+</code></pre>
+<h3 id="42-docker-composeyml仅监听-localhost">4.2 docker-compose.yml（仅监听 localhost）</h3>
+<pre class="language-yaml" data-language="yaml"><code is:raw="" class="language-yaml"><span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">qdrant</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> qdrant/qdrant<span class="token punctuation">:</span>v1.13.0
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> qdrant<span class="token punctuation">-</span>docker
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"127.0.0.1:6333:6333"</span>  <span class="token comment"># REST</span>
+      <span class="token punctuation">-</span> <span class="token string">"127.0.0.1:6334:6334"</span>  <span class="token comment"># gRPC</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> ./data<span class="token punctuation">:</span>/qdrant/storage
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> edge<span class="token punctuation">-</span>net
+
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  <span class="token key atrule">edge-net</span><span class="token punctuation">:</span>
+    <span class="token key atrule">external</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+</code></pre>
+<blockquote>
+<p>为什么不对公网开放：向量库属于敏感数据面（即使没有原文，payload 也可能包含关键信息），默认只给本机服务用。</p>
+</blockquote>
+<h3 id="43-启动与健康检查">4.3 启动与健康检查</h3>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash"><span class="token builtin class-name">cd</span> /home/mars/vps-infra/docker/qdrant-docker
+<span class="token function">docker</span> compose up <span class="token parameter variable">-d</span>
+<span class="token function">curl</span> <span class="token parameter variable">-s</span> http://127.0.0.1:6333/healthz
+<span class="token function">curl</span> <span class="token parameter variable">-s</span> http://127.0.0.1:6333/ <span class="token operator">|</span> jq <span class="token string">'{title,version}'</span>
+</code></pre>
+<p>期望：</p>
+<ul>
+<li><code>healthz check passed</code></li>
+<li><code>version</code> 为 1.13.x（至少与 mem0 客户端兼容）</li>
+</ul>
+<hr>
+<h2 id="5-关键踩坑mem0-oss-的-openaiembedder-默认会打到-apiopenaicom">5) 关键踩坑：Mem0 OSS 的 OpenAIEmbedder 默认会打到 api.openai.com</h2>
+<h3 id="51-现象">5.1 现象</h3>
+<p>即使你在配置里写了 DashScope 的 baseURL，如果 Mem0 内部 embedder 没把 baseURL 传给 OpenAI SDK，它还是会默认请求：</p>
+<ul>
+<li><code>https://api.openai.com/v1/embeddings</code></li>
+</ul>
+<p>然后你就会看到类似报错：</p>
+<ul>
+<li><code>401 Incorrect API key provided: sk-xxxx</code>（因为你拿的是 DashScope key，不是 OpenAI key）</li>
+</ul>
+<h3 id="52-原因">5.2 原因</h3>
+<p>Mem0 OSS 的 <code>OpenAIEmbedder</code> 初始化是：</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">new</span> <span class="token class-name">OpenAI</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">apiKey</span><span class="token operator">:</span> config<span class="token punctuation">.</span>apiKey <span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>没有 <code>baseURL</code>。</p>
+<h3 id="53-修复补-baseurl-支持">5.3 修复（补 baseURL 支持）</h3>
+<blockquote>
+<p>注意：这是对第三方依赖的本地 patch。后续插件升级可能覆盖，需要重新 patch 或提 PR。</p>
+</blockquote>
+<p>文件位置（在插件目录下）：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">/home/mars/.openclaw/extensions/openclaw-mem0/node_modules/mem0ai/dist/oss/index.mjs
+</code></pre>
+<p>把：</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span>openai <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OpenAI</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">apiKey</span><span class="token operator">:</span> config<span class="token punctuation">.</span>apiKey <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>改为：</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token comment">// Support OpenAI-compatible endpoints (e.g. DashScope) via config.url</span>
+<span class="token comment">// OpenAI SDK expects `baseURL`.</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>openai <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OpenAI</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">apiKey</span><span class="token operator">:</span> config<span class="token punctuation">.</span>apiKey<span class="token punctuation">,</span> <span class="token literal-property property">baseURL</span><span class="token operator">:</span> config<span class="token punctuation">.</span>url <span class="token operator">||</span> config<span class="token punctuation">.</span>baseURL <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>然后在 <code>openclaw.json</code> 的 embedder config 里确保带上：</p>
+<pre class="language-json5" data-language="json5"><code is:raw="" class="language-json5"><span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://dashscope.aliyuncs.com/compatible-mode/v1"</span>
+</code></pre>
+<hr>
+<h2 id="6-验证必须做确保可复现">6) 验证（必须做，确保可复现）</h2>
+<h3 id="61-验证-dashscope-embeddings-能用">6.1 验证 DashScope embeddings 能用</h3>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash"><span class="token assign-left variable">KEY</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>jq <span class="token parameter variable">-r</span> <span class="token string">'.env.vars.DASHSCOPE_API_KEY'</span> ~/.openclaw/openclaw.json<span class="token variable">)</span></span>
+<span class="token assign-left variable">URL</span><span class="token operator">=</span><span class="token string">'https://dashscope.aliyuncs.com/compatible-mode/v1'</span>
+
+<span class="token function">curl</span> <span class="token parameter variable">-sS</span> <span class="token string">"<span class="token variable">$URL</span>/embeddings"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">"Authorization: Bearer <span class="token variable">$KEY</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-d</span> <span class="token string">'{"model":"text-embedding-v3","input":"ping"}'</span> <span class="token operator">|</span> <span class="token function">head</span>
+</code></pre>
+<p>期望：HTTP 200 + 返回 <code>embedding</code> 数组。</p>
+<h3 id="62-验证-mem0-插件状态">6.2 验证 mem0 插件状态</h3>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash">openclaw mem0 stats
+</code></pre>
+<p>期望：</p>
+<ul>
+<li>Mode: open-source</li>
+<li>Auto-recall / Auto-capture 与配置一致</li>
+<li>Total memories 随写入增长</li>
+</ul>
+<h3 id="63-写入种子记忆用于验证召回">6.3 写入“种子记忆”（用于验证召回）</h3>
+<p>建议先写 5~20 条“稳定事实”，比如路径索引、流程约定、红线策略。</p>
+<p>写入方式有两种：</p>
+<ul>
+<li>通过 OpenClaw 运行时的 <code>memory_store</code> 工具（推荐，走同一套链路）</li>
+<li>或通过 mem0 CLI（如果它提供 store 命令；不同版本可能不一样）</li>
+</ul>
+<h3 id="64-验证向量检索">6.4 验证向量检索</h3>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash">openclaw mem0 search <span class="token string">"clash 规则目录"</span> <span class="token parameter variable">--scope</span> long-term
+</code></pre>
+<p>期望：能命中类似：</p>
+<ul>
+<li><code>/home/mars/data/nginx/wwwroot/.../ios_rule_script/</code></li>
+</ul>
+<hr>
+<h2 id="7-运维建议避免记忆污染">7) 运维建议（避免记忆污染）</h2>
+<p>Mem0 最容易“越用越差”的原因通常不是召回算法，而是 <strong>写入策略过宽</strong>：把短期状态/日志/一次性排障细节写成了长期记忆。</p>
+<h3 id="71-强制记忆提炼用-custominstructions-约束-auto-capture">7.1 强制记忆提炼：用 <code>customInstructions</code> 约束 auto-capture</h3>
+<p><code>openclaw-mem0</code> 插件支持在配置里写 <code>customInstructions</code>，它会在 <strong>auto-capture（写入）</strong> 时传给 Mem0 作为抽取规则。</p>
+<p>在 <code>~/.openclaw/openclaw.json</code>：</p>
+<pre class="language-json5" data-language="json5"><code is:raw="" class="language-json5"><span class="token property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"entries"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"openclaw-mem0"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"config"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"autoCapture"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">"customInstructions"</span><span class="token operator">:</span> <span class="token string">"You are a long-term memory extractor... When unsure, store NOTHING. Output at most 5 memories per turn..."</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>建议约束点（我们实测有效）：</p>
+<ul>
+<li>只允许写入三类：<strong>用户偏好 / 稳定环境事实 / 长期规则</strong></li>
+<li>严禁写入：临时状态、监控数据、日志/stack trace、一次性排障步骤、猜测、原始代码片段</li>
+<li><strong>不确定就不写</strong></li>
+<li>每轮最多 5 条（宁可少记也不要污染）</li>
+</ul>
+<h3 id="72-用-marker-做对照验证确保规则真的生效">7.2 用 marker 做对照验证（确保规则真的生效）</h3>
+<p>发一条明确的“临时状态”并带唯一标记：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">TEMP_MARKER_20260309：刚才 CPU 95%，只是临时状态，不要记住
+</code></pre>
+<p>然后验证：</p>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash">openclaw mem0 search <span class="token string">"TEMP_MARKER_20260309"</span> <span class="token parameter variable">--scope</span> long-term
+openclaw mem0 stats
+</code></pre>
+<p>期望：marker <strong>搜不到</strong>，且记忆总数不应因这条临时状态而增加。</p>
+<h3 id="73-召回失控的处理手段">7.3 召回失控的处理手段</h3>
+<ul>
+<li>
+<p>初期建议：</p>
+<ul>
+<li><code>autoRecall=true</code></li>
+<li><code>autoCapture=true</code>（前提是 7.1 的提炼规则足够严格）</li>
+<li>定期用 <code>openclaw mem0 search</code> 抽查写入质量</li>
+</ul>
+</li>
+<li>
+<p>如果发现“召回过多/不相关”：</p>
+<ol>
+<li>把 <code>searchThreshold</code> 调高（例如 0.45~0.6）</li>
+<li>或者临时关掉 <code>autoCapture</code></li>
+<li>用 <code>memory_forget</code> 清理明显错误/过期的记忆</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="8-常见问题我们踩过的">8) 常见问题（我们踩过的）</h2>
+<p><img src="/images/blog/openclaw-mem0-dashscope-qdrant/02-debug-flow.svg" alt="Mem0 + DashScope + Qdrant 排障流程图" style="width:100%;max-width:1100px;margin:1rem auto;display:block"></p>
+<h3 id="81-qdrant-版本不兼容">8.1 Qdrant 版本不兼容</h3>
+<p>现象：日志里出现 client/server incompatible。</p>
+<p>解决：升级 Qdrant 镜像到较新版本（例如 v1.13.0）。</p>
+<h3 id="82-openclaw-mem0-报-cannot-find-module-ollama">8.2 openclaw-mem0 报 <code>Cannot find module 'ollama'</code></h3>
+<p>原因：mem0 OSS 代码引用了 <code>ollama</code>，但依赖未安装。</p>
+<p>解决：在插件目录补装（示例）：</p>
+<pre class="language-bash" data-language="bash"><code is:raw="" class="language-bash"><span class="token builtin class-name">cd</span> /home/mars/.openclaw/extensions/openclaw-mem0
+<span class="token function">npm</span> i ollama@0.6.3
+systemctl <span class="token parameter variable">--user</span> restart openclaw-gateway.service
+</code></pre>
+<hr>
+<h2 id="9-最后我怎么判断要不要用-mem0">9) 最后：我怎么判断要不要用 Mem0？</h2>
+<p>一句话：</p>
+<ul>
+<li><strong>跨会话偏好/约定/零散事实</strong> → Mem0（更像“自动回忆”）</li>
+<li><strong>环境事实/路径/配置/服务状态</strong> → 文件/命令为准（Mem0 只做快速提示，执行前要验证）</li>
+</ul>
+<hr>
+<h2 id="参考链接">参考链接</h2>
+<ul>
+<li>Mem0 × OpenClaw 官方文档： <a href="https://docs.mem0.ai/integrations/openclaw">https://docs.mem0.ai/integrations/openclaw</a></li>
+<li>Mem0 Plugin Config（customInstructions 等参数说明）： <a href="https://docs.mem0.ai/integrations/openclaw#configuration">https://docs.mem0.ai/integrations/openclaw#configuration</a></li>
+<li>Mem0 Open Source 文档（Node quickstart）： <a href="https://docs.mem0.ai/open-source/node-quickstart">https://docs.mem0.ai/open-source/node-quickstart</a></li>
+<li>Mem0（GitHub）： <a href="https://github.com/mem0ai/mem0">https://github.com/mem0ai/mem0</a></li>
+<li>OpenClaw（GitHub）： <a href="https://github.com/openclaw/openclaw">https://github.com/openclaw/openclaw</a></li>
+<li>Qdrant 文档： <a href="https://qdrant.tech/documentation/">https://qdrant.tech/documentation/</a></li>
+<li>DashScope OpenAI Compatible Mode 文档： <a href="https://help.aliyun.com/zh/dashscope/developer-reference/openai-compatible">https://help.aliyun.com/zh/dashscope/developer-reference/openai-compatible</a></li>
+</ul>
+<blockquote>
+<p>注：本文涉及的 <code>mem0ai</code> 本地 patch 属于“兼容 OpenAI-compatible baseURL”的工程化修正。后续插件升级可能覆盖，建议把 patch 步骤保留在运维笔记里以便重放。</p>
+</blockquote> <p class="meta">标签：openclaw / mem0 / qdrant / dashscope / 记忆</p> </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

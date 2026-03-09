@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1408" height="768" viewBox="0 0 1408 768" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cover: OpenClaw + Mem0 + DashScope + Qdrant">
+  <defs>
+    <style>
+      .bg { fill:#fbfbf6; }
+      .stroke { stroke:#0b1b3a; stroke-width:4; fill:none; }
+      .thin { stroke:#0b1b3a; stroke-width:2.5; fill:none; }
+      .title { font: 800 56px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; fill:#0b1b3a; letter-spacing:0.5px; }
+      .sub { font: 600 22px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; fill:#334155; }
+      .label { font: 700 20px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; fill:#0b1b3a; }
+      .muted { font: 600 16px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; fill:#475569; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1408" height="768"/>
+
+  <!-- subtle grid -->
+  <g opacity="0.12">
+    <path class="thin" d="M0 96 H1408"/>
+    <path class="thin" d="M0 192 H1408"/>
+    <path class="thin" d="M0 288 H1408"/>
+    <path class="thin" d="M0 384 H1408"/>
+    <path class="thin" d="M0 480 H1408"/>
+    <path class="thin" d="M0 576 H1408"/>
+    <path class="thin" d="M0 672 H1408"/>
+    <path class="thin" d="M96 0 V768"/>
+    <path class="thin" d="M192 0 V768"/>
+    <path class="thin" d="M288 0 V768"/>
+    <path class="thin" d="M384 0 V768"/>
+    <path class="thin" d="M480 0 V768"/>
+    <path class="thin" d="M576 0 V768"/>
+    <path class="thin" d="M672 0 V768"/>
+    <path class="thin" d="M768 0 V768"/>
+    <path class="thin" d="M864 0 V768"/>
+    <path class="thin" d="M960 0 V768"/>
+    <path class="thin" d="M1056 0 V768"/>
+    <path class="thin" d="M1152 0 V768"/>
+    <path class="thin" d="M1248 0 V768"/>
+    <path class="thin" d="M1344 0 V768"/>
+  </g>
+
+  <text class="title" x="96" y="170">OpenClaw × Mem0</text>
+  <text class="sub" x="96" y="214">DashScope Embeddings/LLM + Local Qdrant Vector Store</text>
+
+  <!-- Boxes -->
+  <g transform="translate(96,290)">
+    <rect class="stroke" x="0" y="0" width="360" height="210" rx="22"/>
+    <text class="label" x="26" y="52">OpenClaw</text>
+    <text class="muted" x="26" y="86">gateway / tools / cron</text>
+    <text class="muted" x="26" y="112">mem0 plugin hooks</text>
+    <!-- simple lobster/agent icon -->
+    <path class="thin" d="M298 80 c28 0 50 22 50 50s-22 50-50 50-50-22-50-50 22-50 50-50z"/>
+    <path class="thin" d="M270 106 l-30 -18"/>
+    <path class="thin" d="M270 154 l-30 18"/>
+  </g>
+
+  <g transform="translate(520,290)">
+    <rect class="stroke" x="0" y="0" width="360" height="210" rx="22"/>
+    <text class="label" x="26" y="52">Mem0 (open-source)</text>
+    <text class="muted" x="26" y="86">autoRecall / autoCapture</text>
+    <text class="muted" x="26" y="112">extract → embed → store</text>
+    <!-- arrows -->
+    <path class="thin" d="M250 125 h84"/>
+    <path class="thin" d="M318 110 l18 15 -18 15"/>
+  </g>
+
+  <g transform="translate(944,290)">
+    <rect class="stroke" x="0" y="0" width="368" height="96" rx="22"/>
+    <text class="label" x="26" y="56">DashScope</text>
+    <text class="muted" x="170" y="56">(embeddings + LLM)</text>
+    <!-- cloud -->
+    <path class="thin" d="M310 68c18 0 32-12 32-28 0-15-12-27-28-28-6-20-25-34-47-34-26 0-48 21-48 48 0 2 0 4 1 6-16 4-28 18-28 35 0 20 16 37 37 37h81z" transform="translate(-40,-40)"/>
+  </g>
+
+  <g transform="translate(944,404)">
+    <rect class="stroke" x="0" y="0" width="368" height="96" rx="22"/>
+    <text class="label" x="26" y="56">Qdrant</text>
+    <text class="muted" x="150" y="56">(local vector store)</text>
+    <!-- cylinder -->
+    <ellipse class="thin" cx="315" cy="30" rx="28" ry="10"/>
+    <path class="thin" d="M287 30 v40 c0 6 13 10 28 10s28-4 28-10V30"/>
+    <ellipse class="thin" cx="315" cy="70" rx="28" ry="10"/>
+  </g>
+
+  <!-- connectors -->
+  <path class="stroke" d="M456 395 H520"/>
+  <path class="stroke" d="M880 338 H944"/>
+  <path class="stroke" d="M880 452 H944"/>
+
+  <text class="muted" x="96" y="708">Blueprint-style cover (generated locally as SVG → PNG)</text>
+</svg>

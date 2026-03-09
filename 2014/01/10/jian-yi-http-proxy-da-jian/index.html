@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>简易http proxy搭建 - tingxueren.com</title><meta name="description" content="简易http proxy搭建"><link rel="canonical" href="https://tingxueren.com/2014/01/10/jian-yi-http-proxy-da-jian/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article>  <h1>简易http proxy搭建</h1> <p class="meta">2014/1/10 23:10:00</p> <p>最近学校的网络超级的不爽，原来上下行都能达到几十M的网速被生生的限制为下行3M，上行0.3M不说而且屏蔽了很多网站，使用的手段相当的龌龊，直接在出口路由上将网站直接指向了127.0.0.1，十分的郁闷。我的迅雷会员算是废了，无法在线看视频了，WTF。</p>
+<p>还好最近申请到了Windows Azure的试用名额，除了开着Boinc做WCG任务获取点XRP就是在闲着，就想着用这服务器搭建个http proxy脱离学校的魔掌，使用正常的网络。但是普通的http proxy无法访问那些“不存在”的网站，因此需要该http proxy自动的处理正常网站和被封锁网站之间的关系。基本的思路是做个路由表使得正常的网站走国内网络，“不存在”网站走国外的代理。</p>
+<h2 id="基本需求">基本需求</h2>
+<h3 id="硬件">硬件</h3>
+<p>国外vps一台（Digitalocean）</p>
+<p>国内vps一台（Windows Azure）</p>
+<p>上述两台服务器使用的都是ubuntu 12.04.3 LTS</p>
+<h3 id="软件">软件</h3>
+<p><a href="http://shadowsocks.org/1.4/index.html">shadowsocks</a></p>
+<p><a href="https://www.torproject.org/projects/obfsproxy.html.en">obfsproxy</a></p>
+<p>privoxy</p>
+<p>squid3</p>
+<h2 id="步骤">步骤</h2>
+<h3 id="shadowsocks和obfsproxy">shadowsocks和obfsproxy</h3>
+<p>在国外vps上运行shadowsocks和obfsproxy，shadowsocks提供socks代理服务，obfsproxy负责将流量进行混淆，使得代理更加的安全，不使用obfsproxy也可以。这两个软件的安装配置都比较简单，在各自的官方网站上都有详细的介绍。这样国外的vps上的工作已经做完了，重点在于国内vps上的配置。</p>
+<p>国内vps上同样也要先安装shadowsocks和obfsproxy，不同的是国外安装的都是服务器版本，国内安装的都是客户端版本不要搞混淆了。配置好后国内的vps上就有了一个可以用的socks代理，通过这个代理可以访问自由世界的互联网，没有伟大的GFW的干扰了。但是很多的服务不支持socks代理，http代理支持的范围比较广泛，幸好socks代理转化为http代理还是比较容易的，使用privoxy就可以了。</p>
+<h3 id="安装privoxy">安装privoxy</h3>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">$ sudo apt-get install privoxy
+</code></pre>
+<p>privoxy的配置比较简单，只需要指定socks代理的端口和转化出来的http代理的端口就好，配置文件为<code>/etc/pvivoxy/config</code>,下面是简单的例子：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"># /etc/privoxy/config
+
+user-manual /usr/share/doc/privoxy/user-manual
+confdir /etc/privoxy
+logdir /var/log/privoxy
+actionsfile match-all.action
+actionsfile default.action
+#actionsfile block.action
+filterfile default.filter
+#filterfile user.filter
+logfile logfile
+forward-socks5 / 127.0.0.1:1234 . #socks代理的端口1234
+listen-address *:5678             #转化的http代理端口5678
+toggle 1
+enable-remote-toggle 1
+enable-remote-http-toggle 0
+enable-edit-actions 0
+enforce-blocks 0
+buffer-limit 5120
+#connection-sharing 0
+forwarded-connect-retries 3
+accept-intercepted-requests 0
+allow-cgi-request-crunching 0
+activity-animation 1
+split-large-forms 0
+keep-alive-timeout 0
+socket-timeout 120
+handle-as-empty-doc-returns-ok 1
+</code></pre>
+<p>privoxy安装好后我们就有了一个http代理，这个代理可以自由的访问所有的网络，所有的请求都会转到国外的vps上执行然后将执行的结果回传，所有的流量都要在国外转一圈，这样访问国内的网站是很慢的，而且有些国内网站屏蔽了国内ip，这样的网络体验并不好。下一步骤就该squid大显身手的时候了，squid是一个代理和缓存服务器，可以指定规则使得不同的网络请求走不同的路径，还有缓存加速的功能，可以加速网络的访问，squid的安装比较简单。</p>
+<h3 id="安装squid">安装squid</h3>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">$ sudo apt-get install squid
+</code></pre>
+<p>squid的配置文件位于<code>/etc/squid3/squid.conf</code>,下面是我使用的配置，稍后我会简单的介绍下：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">#代理服务器的监听端口
+http_port 9999
+
+##########################
+ 
+cache_peer localhost parent 5678 0 no-query
+# 默认走shadowsocks, 国内ip走国内
+acl chinaip dst "/etc/squid3/chinaip"
+always_direct allow chinaip
+acl ALL src all
+never_direct allow ALL
+
+##########################
+
+#内存缓冲区的大小
+cache_mem 2048 MB
+#设置硬盘缓冲区最大4096MB，16个一级目录，256个二级目录。
+cache_dir ufs /var/spool/squid 4096 16 256
+#设置访问日志文件
+cache_access_log /var/log/squid3/access.log
+#设置缓存日志文件
+cache_log /var/log/squid3/cache.log
+#设置网页缓存日志文件
+cache_store_log /var/log/squid3/store.log
+#定义允许名称为all的http请求。
+http_access allow all
+</code></pre>
+<p>squid支持父代理，而且指定了父代理后默认的全部流量都从父代理走，由于GFW的威力日益强大，为了一劳永逸，配置中使用了比较暴力的手段，找出了所有的中国ip，将ip段放在<code>/etc/squid3/chinaip</code>这个文件中，使国内ip直连，国外ip都通过shadowsocks代理。虽然会使得有些未被墙掉的网站访问变慢，但是照着GFW这样疯狂的势头这个方案还是比较行得通的，不用蛋疼的手动添加被墙的网站了。</p>
+<p><code>/etc/squid3/chinaip</code>中的条目都是形如<code>192.168.1.0/24</code>或者<code>192.168.1.0/255.255.255.0</code>，每行一个网段，squid同时支持这两种网络的写法。获取国内的ip地址可以访问该<a href="https://code.google.com/p/chnroutes/">网站</a>,下载后的文件一般需要使用<code>sed、awd</code>等工具修改成满足squid需求的格式。这样就得到了一个全能的http proxy，国内国外网站随意遨游了。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="http://bao3.blogspot.com/2012/01/apn-proxy-apn.html">简易 APN Proxy (APN代理）的搭建</a></li>
+<li><a href="https://www.fdb713.com/set-up-an-easy-apn-proxy/">简易apn代理搭建</a></li>
+<li><a href="https://sorz.org/squid-blacklist/">GFWList 兼容 Squid</a></li>
+<li><a href="http://home.arcor.de/pangj/squid/index.html">Squid中文权威指南</a></li>
+</ol>  </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

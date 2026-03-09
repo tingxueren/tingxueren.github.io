@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ubuntu开启打印机服务 - tingxueren.com</title><meta name="description" content="ubuntu开启打印机服务"><link rel="canonical" href="https://tingxueren.com/2012/08/03/ubuntu-printer/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article>  <h1>ubuntu开启打印机服务</h1> <p class="meta">2012/8/4 06:32:00</p> <h2 id="目的">目的</h2>
+<p>局域网中有空闲的打印机，可以做成打印机服务器，局域网中的用户添加网络打印机就可以自由的使用，方便，且节省资源，达到了设备充分利用的效果。</p>
+<h3 id="软硬件情况">软硬件情况</h3>
+<ul>
+<li>服务器: 运行着ubuntu11.10 x64系统，现在运行着NTF，FTP，PT下载，迅雷下载等服务。</li>
+<li>打印机: HP LaserJet M1319 Multifunction Printer series, 官方网站提供的有linux驱动。</li>
+<li>客户端: windows, ubuntu, fedora。</li>
+</ul>
+<h3 id="具体步骤">具体步骤</h3>
+<ul>
+<li>
+<p>第一步: 下载对应版本的linux驱动<a href="http://hplipopensource.com/hplip-web/index.html?">下载地址</a>，
+选择64位的驱动，访问比较慢。</p>
+</li>
+<li>
+<p>第二步: 在终端中对照着<a href="http://hplipopensource.com/hplip-web/install/install/index.html">安装指南</a>, 一步步安装。在下载驱动的时候，
+由于驱动托管在sourceforge.net,被墙掉了，请科学上网进行下载。在第13步的时候，还要下载一个插件，由于网络的原因，一直卡死，这时候
+可以手动取消，把插件下载到本地，然后运行sudo ph-plug 或者是 hp-setup 进行手动安装。驱动安装后，本机测试就可以打印了，网络打印的
+话需要进一步的设置。</p>
+</li>
+<li>
+<p>第三步: 网络打印需要CUPS，在以前的版本中可以直接安装cpus的软件包，但是最近的ubuntu版本这个包被修改成了cupsys-driver-gutenprint,
+可以用命令 sudo apt-get install cupsys-driver-gutenprint。安装完成后要对cups服务进行设置，在浏览器中输入<a href="http://127.0.0.1:631">http://127.0.0.1:631</a>,
+可以进入CUPS的设置页面，选Administration，选上Show printers shared by other systems
+Share published printers connected to this system
+新版本的还有一个也选上
+Allow printing from the Internet</p>
+</li>
+<li>
+<p>第四步: CUPS设置完毕后，服务器端已经设置完毕，可以设置客户端了。linux下测试可以添加网络打印机，输入服务器的ip可自动的识别出服务上
+的打印机，选择下一步就好。windows下首先要安装对应的打印机驱动，然后添加网络打印机，在地址栏目输入的可是如下：
+<a href="http://%E6%9C%8D%E5%8A%A1%E5%99%A8ip:631/printers/%E6%89%93%E5%8D%B0%E6%9C%BA%E5%90%8D%E7%A7%B0">http://服务器ip:631/printers/打印机名称</a>
+linux下如果不识别可以按照下面格式输入
+ipp://服务器ip:631/printers/打印机名称
+设置好后都有测试页可供打印。客户端设置完毕。</p>
+</li>
+</ul>  </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>

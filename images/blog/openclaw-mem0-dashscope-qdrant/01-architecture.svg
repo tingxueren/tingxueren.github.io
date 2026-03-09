@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1400" height="520" viewBox="0 0 1400 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenClaw + Mem0 + DashScope + Qdrant architecture">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0b1b3a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="520" fill="#fbfbf6"/>
+
+  <text x="60" y="64" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="26" font-weight="800" fill="#0b1b3a">OpenClaw × Mem0（DashScope + Qdrant）架构</text>
+  <text x="60" y="92" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">Auto-recall：回答前召回；Auto-capture：回答后抽取并写入（向量落本机）</text>
+
+  <!-- OpenClaw -->
+  <rect x="60" y="140" width="360" height="280" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="90" y="182" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">OpenClaw Gateway</text>
+  <text x="90" y="214" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">• channels / tools / cron</text>
+  <text x="90" y="238" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">• 主对话模型（gpt/qwen）</text>
+  <text x="90" y="262" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">• 插件：openclaw-mem0</text>
+  <text x="90" y="296" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="700" fill="#0b1b3a">开关：</text>
+  <text x="120" y="320" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">- autoRecall（pre-turn）</text>
+  <text x="120" y="344" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">- autoCapture（post-turn）</text>
+
+  <!-- Mem0 -->
+  <rect x="500" y="140" width="380" height="280" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="530" y="182" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">Mem0 Plugin（open-source）</text>
+  <text x="530" y="214" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">组件：</text>
+  <text x="560" y="238" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">1) Embedder（向量化）</text>
+  <text x="560" y="262" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">2) LLM（抽取要记的内容）</text>
+  <text x="560" y="286" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">3) VectorStore（存储 + 检索）</text>
+  <text x="530" y="322" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">写入：payload + vector → Qdrant</text>
+  <text x="530" y="346" font-family="ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#475569">召回：query → vector → search → 注入上下文</text>
+
+  <!-- DashScope -->
+  <rect x="960" y="140" width="380" height="120" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="990" y="182" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">DashScope（OpenAI-compatible）</text>
+  <text x="990" y="214" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">• embeddings：text-embedding-v3</text>
+  <text x="990" y="238" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">• llm：qwen3-max / qwen3.5-plus</text>
+
+  <!-- Qdrant -->
+  <rect x="960" y="300" width="380" height="120" rx="18" fill="#ffffff" stroke="#0b1b3a" stroke-width="2.5"/>
+  <text x="990" y="342" font-family="ui-sans-serif, system-ui" font-size="18" font-weight="800" fill="#0b1b3a">Qdrant（local）</text>
+  <text x="990" y="374" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">• 127.0.0.1:6333</text>
+  <text x="990" y="398" font-family="ui-sans-serif, system-ui" font-size="13" font-weight="600" fill="#475569">• collection: openclaw-mem0</text>
+
+  <!-- arrows -->
+  <path d="M420 250 H500" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="438" y="236" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="700" fill="#0b1b3a">hook</text>
+
+  <path d="M880 200 H960" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="890" y="186" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="700" fill="#0b1b3a">embed/llm</text>
+
+  <path d="M880 360 H960" stroke="#0b1b3a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="890" y="346" font-family="ui-sans-serif, system-ui" font-size="12" font-weight="700" fill="#0b1b3a">search/upsert</text>
+</svg>

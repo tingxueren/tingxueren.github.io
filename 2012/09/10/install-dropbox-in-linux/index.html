@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>install dropbox in linux - tingxueren.com</title><meta name="description" content="install dropbox in linux"><link rel="canonical" href="https://tingxueren.com/2012/09/10/install-dropbox-in-linux/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"><style>:root{--bg-page: #f9f6f1;--bg-paper: #fdfbf7;--bg-soft: #f3efe8;--line: #e5dfd4;--line-strong: #d7d0c4;--text: #2b2b2b;--muted: #666666;--link: #1e429f;--link-hover: #18337e;--code-bg: #f4efe6;--radius-lg: 18px;--radius-md: 12px;--radius-sm: 8px}*{box-sizing:border-box}html,body{margin:0;padding:0}body{color:var(--text);background:radial-gradient(circle at 8% -14%,rgba(200,183,150,.16),transparent 36%),radial-gradient(circle at 100% 0%,rgba(163,176,208,.14),transparent 30%),var(--bg-page);font-family:Inter,Noto Sans SC,PingFang SC,Hiragino Sans GB,Microsoft YaHei,system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}.container{max-width:900px;margin:0 auto;padding:28px 18px 56px}.site-header,.site-main,.site-footer{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--bg-paper);box-shadow:0 1px #fff9 inset}.site-header{padding:24px 26px 20px}.site-main{margin-top:14px;padding:26px}.site-footer{margin-top:14px;padding:14px 26px;color:var(--muted);font-size:.9rem}.brand{margin:0;font-size:clamp(2rem,3.3vw,2.55rem);letter-spacing:.02em;font-family:"Instrument Serif",STSong,serif;font-weight:400}.brand a{color:var(--text);text-decoration:none}.tagline{margin:6px 0 0;color:var(--muted);font-size:.95rem}nav{margin-top:17px;display:flex;flex-wrap:wrap;gap:10px}a{color:var(--link);text-decoration:none;transition:color .18s ease,background-color .18s ease,border-color .18s ease}a:hover{color:var(--link-hover)}nav a{color:var(--text);padding:6px 11px;border-radius:999px;border:1px solid transparent}nav a:hover{border-color:var(--line);background:var(--bg-soft)}nav a.active{border-color:var(--line-strong);background:var(--bg-soft)}h1,h2,h3{margin:0 0 .78em;line-height:1.35;color:var(--text)}h1{font-size:clamp(1.6rem,3vw,2rem);font-family:"Instrument Serif",STSong,serif;font-weight:400}h2{margin-top:1.65em;font-size:1.28rem}h3{margin-top:1.4em;font-size:1.05rem}p{margin:.85em 0}ul,ol{padding-left:1.35rem}li+li{margin-top:.45em}hr{border:0;border-top:1px solid var(--line);margin:1.9rem 0}.meta{color:var(--muted);font-size:.9rem}.post-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.post-list li{padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:#fffdfa;transition:border-color .16s ease,background-color .16s ease}.post-list li:hover{border-color:var(--line-strong);background:#fffcf8}.post-list li a{color:var(--text);font-weight:600}.post-list li a:hover{color:var(--link)}.pager{margin-top:16px;display:flex;justify-content:space-between;gap:10px}.pager a,.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-soft)}.pager a:hover,.pill:hover{border-color:var(--line-strong);background:#efe9df}article{overflow-wrap:break-word}article img{max-width:100%;border-radius:12px;border:1px solid var(--line)}pre{margin:1rem 0;padding:.95rem 1rem;border-radius:10px;border:1px solid var(--line);background:var(--code-bg)!important;overflow:auto}code{font-family:Courier Prime,ui-monospace,SFMono-Regular,Menlo,monospace}:not(pre)>code{font-size:.92em;padding:.12em .35em;border-radius:6px;border:1px solid #e6dfd0;background:#f5f1e8}blockquote{margin:1rem 0;padding:.25rem 0 .25rem .95rem;border-left:3px solid #cdbca0;color:#5f5a52}.tag-cloud{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}.tag-cloud li a{margin-right:4px}@media(max-width:640px){.container{padding:12px 10px 26px}.site-header,.site-main,.site-footer{border-radius:12px}.site-header{padding:18px 16px 15px}.site-main{padding:18px 16px}.site-footer{padding:12px 16px}}
+</style></head> <body> <div class="container"> <header class="site-header"> <h1 class="brand"><a href="/">tingxueren.com</a></h1> <p class="tagline">reading && thinking</p> <nav> <a href="/">首页</a><a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/rss.xml">RSS</a> </nav> </header> <main class="site-main">  <article>  <h1>install dropbox in linux</h1> <p class="meta">2012/9/11 04:49:00</p> <p>Dropbox 是个很神奇的工具，你可以用它来同步重要的文件，配置。可以放心的把文件放在云端，作为备份。Dropbox 有着齐全的平台覆盖，不但有 windows客户端，MAC 客户端，还有 ios 客户端，Android 客户端，最让我高兴的是还有 Linux 客户端，这点让我十分的欣赏。Dropbox 真正的实现了全平台覆盖，在不同的平台上都给人一致的体验。</p>
+<h2 id="dropbox-的安装">Dropbox 的安装</h2>
+<p>天朝是个神奇的地方，基本上好的互联网服务都会被 #GFW 认证。可以说被 #GFW 认证的服务才是靠谱和真正有价值的服务。</p>
+<p>为了能正常的使用 Dropbox 请认真学习各种翻墙技能，常常温故知新，多准备些备用手段，以便应付 #GFW 层出不穷的攻击手段。推荐的梯子有 VPN、SSH、GAE（GoAgent，Wallproxy）等等。</p>
+<ul>
+<li>
+<p>为了使用 Dropbox，必须先有个帐号，Dropbox 主页被墙，请自备梯子。客户端
+暂时还能正常的使用，但是有个问题，在两台电脑之间无法即时同步，因为提供即
+时同步功能的服务器与客户端用的是 http 协议，被 #GFW 干扰。但是重新关闭客
+户端后即可正常同步，天朝威武，把好好的自动工具搞成了半自动。</p>
+</li>
+<li>
+<p>在主页上有 Dropbox 软件下载, Windows 下客户端是一个单一个软件，Linux
+下却会给人带来点小麻烦。</p>
+</li>
+<li>
+<p>在 ubuntu 下软件中心有 Dropbox，但是安装后会有以下的画面：</p>
+</li>
+<li>
+<p><img src="/images/dropbox-error.png" alt=""></p>
+<p>原因是软件中心的 Dropbox 只是个 nautilus 插件，由它整合 Dropbox 和 nautilus
+本身并不是完整的客户端，需要从 Dropbox 官网下载完整的安装包。</p>
+</li>
+<li>
+<p>然后在下载的安装包的过程中，你会发现安装进程像卡死一样一动不同。
+不用怀疑，是 #GFW 发威了，它阻断了你与 Dropbox 官网的连接，为了正常的用 Dropbox，
+我们需要手动安装客户端。</p>
+</li>
+<li>
+<p>令人高兴的是 Dropbox 提供了安装包的完整的下载版本，可以在<a href="https://www.dropbox.com/install?os=lnx">Dropbox官网</a>查看。</p>
+</li>
+<li>
+<p>下载安装有两种方式，一种是从浏览器下载，然后解压，执行; 另一种是自己在终
+端中执行所有的操作。</p>
+</li>
+<li>
+<p>翻墙方式首选 VPN ，然后终端中的命令可以顺利的执行，如果是用 GoAgent 等
+工具的话需要在执行前设置终端的代理，让终端接下来的操作都通过代理进行，
+即通过代理下载安装包，由于安装软件需要 root 权限，切记在设置代理前，切换
+为 root 用户，下面 GoAgent 为例说明设置（8087为GoAgent默认端口）。</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> export http_proxy=http://127.0.0.1:8087   
+ export https_proxy=http://127.0.0.1:8087   
+</code></pre>
+</li>
+<li>
+<p>然后在终端中执行下面命令以完成安装：</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> # 32 位系统执行下面命令
+ $cd ~ &#x26;&#x26; wget -O - "https://www.dropbox.com/download?plat=lnx.x86" | tar xzf -
+
+ # 64 位系统执行下面命令
+ $cd ~ &#x26;&#x26; wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+</code></pre>
+</li>
+<li>
+<p>最后执行下面的命令</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext"> $ ~/.dropbox-dist/dropboxd
+</code></pre>
+</li>
+</ul>
+<p>Dropbox 安装顺利完成，享受全平台同步的快感吧。</p>  </article>  </main> <footer class="site-footer">© tingxueren</footer> </div> </body></html>
