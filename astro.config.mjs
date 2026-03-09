@@ -23,7 +23,7 @@ export default defineConfig({
   },
   vite: {
     server: {
-      allowedHosts: ['nerd.tingxueren.com', 'tingxueren.com']
+      allowedHosts: ['nerd.tingxueren.com', 'blog-preview.tingxueren.com', 'tingxueren.com']
     }
   }
 });

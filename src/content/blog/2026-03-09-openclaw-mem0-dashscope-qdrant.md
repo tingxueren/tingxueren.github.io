@@ -33,8 +33,6 @@ coverImage: /assets/blog/openclaw-mem0-dashscope-qdrant/cover-google-blue-2.png
 
 <img
   src="/images/blog/openclaw-mem0-dashscope-qdrant/01-architecture.svg"
-  data-preview-src="/blog-preview/images/blog/openclaw-mem0-dashscope-qdrant/01-architecture.svg"
-  onerror="this.onerror=null;this.src=this.dataset.previewSrc"
   alt="OpenClaw + Mem0（DashScope + Qdrant）架构图"
   style="width:100%;max-width:1100px;margin:1rem auto;display:block"
 />
@@ -289,15 +287,61 @@ openclaw mem0 search "clash 规则目录" --scope long-term
 
 ## 7) 运维建议（避免记忆污染）
 
+Mem0 最容易“越用越差”的原因通常不是召回算法，而是 **写入策略过宽**：把短期状态/日志/一次性排障细节写成了长期记忆。
+
+### 7.1 强制记忆提炼：用 `customInstructions` 约束 auto-capture
+
+`openclaw-mem0` 插件支持在配置里写 `customInstructions`，它会在 **auto-capture（写入）** 时传给 Mem0 作为抽取规则。
+
+在 `~/.openclaw/openclaw.json`：
+
+```json5
+"plugins": {
+  "entries": {
+    "openclaw-mem0": {
+      "config": {
+        "autoCapture": true,
+        "customInstructions": "You are a long-term memory extractor... When unsure, store NOTHING. Output at most 5 memories per turn..."
+      }
+    }
+  }
+}
+```
+
+建议约束点（我们实测有效）：
+- 只允许写入三类：**用户偏好 / 稳定环境事实 / 长期规则**
+- 严禁写入：临时状态、监控数据、日志/stack trace、一次性排障步骤、猜测、原始代码片段
+- **不确定就不写**
+- 每轮最多 5 条（宁可少记也不要污染）
+
+### 7.2 用 marker 做对照验证（确保规则真的生效）
+
+发一条明确的“临时状态”并带唯一标记：
+
+```
+TEMP_MARKER_20260309：刚才 CPU 95%，只是临时状态，不要记住
+```
+
+然后验证：
+
+```bash
+openclaw mem0 search "TEMP_MARKER_20260309" --scope long-term
+openclaw mem0 stats
+```
+
+期望：marker **搜不到**，且记忆总数不应因这条临时状态而增加。
+
+### 7.3 召回失控的处理手段
+
 - 初期建议：
   - `autoRecall=true`
-  - `autoCapture=true`
-  - 但要定期用 `openclaw mem0 search` / `memory_list` 抽查写入质量
+  - `autoCapture=true`（前提是 7.1 的提炼规则足够严格）
+  - 定期用 `openclaw mem0 search` 抽查写入质量
 
-- 如果发现“乱记/噪音太多”：
-  1) 先把 `searchThreshold` 调高（比如 0.45~0.6）
+- 如果发现“召回过多/不相关”：
+  1) 把 `searchThreshold` 调高（例如 0.45~0.6）
   2) 或者临时关掉 `autoCapture`
-  3) 用 `memory_forget` 清理错误记忆
+  3) 用 `memory_forget` 清理明显错误/过期的记忆
 
 ---
 
@@ -305,8 +349,6 @@ openclaw mem0 search "clash 规则目录" --scope long-term
 
 <img
   src="/images/blog/openclaw-mem0-dashscope-qdrant/02-debug-flow.svg"
-  data-preview-src="/blog-preview/images/blog/openclaw-mem0-dashscope-qdrant/02-debug-flow.svg"
-  onerror="this.onerror=null;this.src=this.dataset.previewSrc"
   alt="Mem0 + DashScope + Qdrant 排障流程图"
   style="width:100%;max-width:1100px;margin:1rem auto;display:block"
 />
@@ -342,6 +384,7 @@ systemctl --user restart openclaw-gateway.service
 ## 参考链接
 
 - Mem0 × OpenClaw 官方文档： https://docs.mem0.ai/integrations/openclaw
+- Mem0 Plugin Config（customInstructions 等参数说明）： https://docs.mem0.ai/integrations/openclaw#configuration
 - Mem0 Open Source 文档（Node quickstart）： https://docs.mem0.ai/open-source/node-quickstart
 - Mem0（GitHub）： https://github.com/mem0ai/mem0
 - OpenClaw（GitHub）： https://github.com/openclaw/openclaw
