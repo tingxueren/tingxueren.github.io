@@ -2,6 +2,7 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context) {
+  // Exclude drafts from RSS even in dev.
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
     .sort((a, b) => b.data.date - a.data.date);
 

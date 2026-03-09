@@ -3,7 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  // Preview (Astro dev) should include drafts; production build should exclude drafts.
+  const includeDrafts = import.meta.env.DEV;
+  const posts = await getCollection('blog', ({ data }) => (includeDrafts ? true : !data.draft));
   return posts.map((post) => ({
     params: { legacy: post.data.legacyPath },
     props: { post }
